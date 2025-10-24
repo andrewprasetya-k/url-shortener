@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AppController } from './Controller/Controller';
+import { UrlController } from './Controller/Controller';
 import { UrlService } from './Service/Service';
 import { Url, UrlSchema } from './Model/Url';
 
@@ -11,7 +11,7 @@ import { Url, UrlSchema } from './Model/Url';
     MongooseModule.forRoot(process.env.MONGO_URI!),
     MongooseModule.forFeature([{ name: Url.name, schema: UrlSchema }])
   ],
-  controllers: [AppController],
+  controllers: [UrlController],
   providers: [UrlService],
 })
 export class AppModule {}
