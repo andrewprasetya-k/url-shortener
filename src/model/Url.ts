@@ -1,18 +1,21 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type ItemDocument = Item & Document;
+export type UrlDocument = Url & Document;
 
 @Schema()
-export class Item {
+export class Url {
   @Prop({ required: true })
   id: number;
 
   @Prop()
   shortenedUrl: string;
+  
+  @Prop()
+  originalUrl: string;
 
   @Prop({ default: Date.now })
   createdAt: Date;
 }
 
-export const ItemSchema = SchemaFactory.createForClass(Item);
+export const UrlSchema = SchemaFactory.createForClass(Url);
