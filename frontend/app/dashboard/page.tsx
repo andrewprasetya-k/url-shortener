@@ -13,10 +13,12 @@ export default function DashboardPage() {
   const [links, setLinks] = useState<ShortLink[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [newUrl, setNewUrl] = useState('');
+
 
   const fetchLinks = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/links"); // sesuaikan endpoint
+      const res = await fetch("http://localhost:3000/"); // sesuaikan endpoint
       if (!res.ok) throw new Error("Gagal mengambil data link");
       const data = await res.json();
       setLinks(data);
@@ -26,6 +28,30 @@ export default function DashboardPage() {
       setLoading(false);
     }
   };
+
+  const handleSubmit = async () =>{
+    try {
+        const res = await fetch("http://localhost:3000/",{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                originalUrl:newUrl
+            })
+        })
+        if (!res.ok){
+            console.log(res.text());
+            throw new Error("Gagal menambahkan link");
+        }
+        setNewUrl(""); // reset input
+        fetchLinks(); // refresh data
+    } catch (error:any) {
+        setError(error.message);
+    }finally{
+        setLoading(false);
+    }
+  }
 
   useEffect(() => {
     fetchLinks();
