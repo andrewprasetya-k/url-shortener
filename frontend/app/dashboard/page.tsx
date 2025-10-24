@@ -95,19 +95,19 @@ export default function DashboardPage() {
 
   return (
     <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">📊 Dashboard Shortlink</h1>
+      <h1 className="text-2xl font-bold mb-4">Dashboard Shortlink</h1>
       <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
         <input
           type="url"
           placeholder="Masukkan URL asli..."
           value={newUrl}
           onChange={(e) => setNewUrl(e.target.value)}
-          className="flex-1 border rounded p-2"
+          className="flex-1 border rounded-full p-2 pl-4"
           required
         />
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-600"
         >
           Shorten
         </button>
@@ -115,19 +115,19 @@ export default function DashboardPage() {
       {links.length === 0 ? (
         <p className="text-gray-500">Belum ada link yang dibuat.</p>
       ) : (
-        <table className="w-full border border-gray-300 rounded-lg">
-          <thead className="bg-red-500">
+        <table className="w-full border-gray-300 rounded-full">
+          <thead className="bg-gray-300">
             <tr>
-              <th className="text-left p-2">Asli</th>
-              <th className="text-left p-2">Pendek</th>
-              <th className="text-left p-2">Tanggal</th>
-              <th className="p-2" colSpan={2}>Aksi</th>
+              <th className="p-2 bg-gray-300 rounded-l-full">Asli</th>
+              <th className="p-2 bg-gray-300">Pendek</th>
+              <th className="p-2 bg-gray-300">Tanggal</th>
+              <th className="p-2 bg-gray-300 rounded-r-full" colSpan={2}>Aksi</th>
             </tr>
           </thead>
           <tbody>
             {links.map((link) => (
-            <tr key={link._id || link.shortenedUrl} className="border-t">
-                <td className="p-2 truncate max-w-[200px]">               
+            <tr key={link._id || link.shortenedUrl}>
+                <td className="p-2 truncate max-w-[200px] text-blue-600 underline">               
                 <a href={link.originalUrl} target="_blank" rel="noopener noreferrer">
                     {link.originalUrl}
                 </a></td>
@@ -145,7 +145,7 @@ export default function DashboardPage() {
                 ) : (
                 <button
                     onClick={() => copyToClipboard(link._id, link.shortenedUrl)}
-                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                    className="px-3 py-1 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
                 >
                     Copy
                 </button>
@@ -154,7 +154,7 @@ export default function DashboardPage() {
                 <td className="p-2 text-center">
                 <button
                     onClick={() => deleteClicked(link.shortenedUrl)}
-                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                    className="px-3 py-1 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
                 >
                     Delete
                 </button>
