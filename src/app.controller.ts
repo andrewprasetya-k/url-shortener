@@ -15,19 +15,20 @@ export class AppController {
     return this.appService.getHello();
   }
 
-@Get('test-db')
-async testDb() {
-  try {
-    const db = this.connection.db;
-    if (!db) {
-      throw new Error('Database connection not initialized yet');
-    }
+  @Get('test-db')
+  async testDb() {
+    try {
+      const db = this.connection.db;
+      if (!db) {
+        throw new Error('Database connection not initialized yet');
+      }
 
-    await db.admin().ping();
-    return { status: 'success', message: 'MongoDB connected!' };
-  } catch (error) {
-    return { status: 'error', message: error.message };
+      await db.admin().ping();
+
+      return { status: 'success', message: 'MongoDB connected!' };
+    } catch (error) {
+      return { status: 'error', message: (error as Error).message };
+    }
   }
 }
 
-}
