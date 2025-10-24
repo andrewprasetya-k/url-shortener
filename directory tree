@@ -1,0 +1,31 @@
+src/
+ ├─ app/
+ │   ├─ page.tsx                   → landing page (form shorten)
+ │   ├─ dashboard/
+ │   │   └─ page.tsx               → list link per user
+ │   ├─ login/page.tsx             → login
+ │   ├─ register/page.tsx          → register
+ │   ├─ [slug]/page.tsx            → redirect / detail link (opsional)
+ │   ├─ layout.tsx                 → global layout
+ │   └─ (auth)/                    → optional route grouping untuk auth
+ │
+ ├─ components/
+ │   ├─ FormShorten.tsx
+ │   ├─ LinkCard.tsx
+ │   ├─ Navbar.tsx
+ │   └─ Button.tsx
+ │
+ ├─ lib/
+ │   ├─ api.ts                     → helper fetch ke NestJS API
+ │   ├─ auth.ts                    → handle JWT (login/logout)
+ │   └─ constants.ts
+ │
+ ├─ hooks/
+ │   ├─ useAuth.ts                 → state auth user
+ │   └─ useLinks.ts                → state daftar link user
+ │
+ ├─ types/
+ │   └─ index.ts                   → definisi interface data
+ │
+ └─ styles/
+     └─ globals.css
