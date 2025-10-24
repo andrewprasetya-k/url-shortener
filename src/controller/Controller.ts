@@ -1,13 +1,13 @@
-import { Body, Controller, Get, Post, Param } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Delete } from '@nestjs/common';
 import { UrlService } from '../Service/Service';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { CreateUrlDto } from '../Dto/Dto';
 
 @Controller()
-export class AppController {
+export class UrlController {
   constructor(
-    private readonly appService: UrlService,
+    private readonly urlService: UrlService,
     @InjectConnection() private readonly connection: Connection,
   ) {}
 
@@ -29,17 +29,21 @@ export class AppController {
 
   @Post()
   async createShortUrl(@Body() createUrlDto: CreateUrlDto) {
-    return this.appService.create(createUrlDto);
+    return this.urlService.create(createUrlDto);
   }
 
   @Get()
   async getAllUrl(){
-    return this.appService.findAll();
+    return this.urlService.findAll();
   }
 
   @Get('/:url')
-  async getUrlById(@Param('url') id:number){
-    return this.appService.findByShortened(id.toString());
+  async getUrlById(@Param('url') id:string){
+    return this.urlService.findByShortened(id.toString());
+  }
+
+  @Delete('/:url')
+  async deleteUrl(@Param('url') id:string){
+    return this.urlService.remove(id.toString());
   }
 }
-
