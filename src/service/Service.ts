@@ -16,7 +16,6 @@ export class UrlService {
     try {
       return await newUrl.save();
     } catch (error) {
-      // Lempar exception jika DB error
       throw new InternalServerErrorException(`Error creating shortened URL: ${error.message}`);
     }
   }
@@ -40,18 +39,18 @@ export class UrlService {
   }
 
   // UPDATE ORIGINAL URL BY ID
-  async update(id: string, originalUrl: string): Promise<Url> {
-    const updated = await this.urlModel.findByIdAndUpdate(
-      id,
-      { originalUrl },
-      { new: true },
-    ).exec();
+  // async update(id: string, originalUrl: string): Promise<Url> {
+  //   const updated = await this.urlModel.findByIdAndUpdate(
+  //     id,
+  //     { originalUrl },
+  //     { new: true },
+  //   ).exec();
 
-    if (!updated) {
-      throw new NotFoundException(`URL with id="${id}" not found`);
-    }
-    return updated;
-  }
+  //   if (!updated) {
+  //     throw new NotFoundException(`URL with id="${id}" not found`);
+  //   }
+  //   return updated;
+  // }
 
   // DELETE BY SHORTENED URL
   async removeByShortened(shortened: string): Promise<{ message: string }> {
