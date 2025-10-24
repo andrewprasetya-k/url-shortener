@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Delete, Res } from '@nestjs/common';
 import { UrlService } from '../Service/Service';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { CreateUrlDto } from '../Dto/Dto';
+import express from 'express';
 
 @Controller()
 export class UrlController {
@@ -38,8 +39,8 @@ export class UrlController {
   }
 
   @Get('/:url')
-  async getUrlById(@Param('url') url:string){
-    return this.urlService.findByShortened(url.toString());
+  async getUrlById(@Param('url') url:string, @Res() res: express.Response){
+    return res.redirect(await this.urlService.findByShortened(url.toString()));
   }
 
   @Delete('/:url')
