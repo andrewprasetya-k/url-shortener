@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react';
 
 interface ShortLink {
-  id: number;
+  id: string;
   originalUrl: string;
-  shortUrl: string;
+  shortenedUrl: string;
   createdAt: string;
 }
 
@@ -30,13 +30,16 @@ export default function DashboardPage() {
     fetchLinks();
   }, []);
 
+  
+  
   const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    alert('Link disalin ke clipboard!');
-  };
-
-  if (loading) return <p className="p-6 text-gray-500">Memuat data link...</p>;
-  if (error) return <p className="p-6 text-red-500">Error: {error}</p>;
+      navigator.clipboard.writeText(text);
+      alert('Link disalin ke clipboard!');
+    };
+    
+    if (loading) return <p className="p-6 text-gray-500">Memuat data link...</p>;
+    if (error) return <p className="p-6 text-red-500">Error: {error}</p>;
+    console.log(links);
 
   return (
     <div className="max-w-3xl mx-auto p-6">
@@ -46,7 +49,7 @@ export default function DashboardPage() {
         <p className="text-gray-500">Belum ada link yang dibuat.</p>
       ) : (
         <table className="w-full border border-gray-300 rounded-lg">
-          <thead className="bg-gray-100">
+          <thead className="bg-red-500">
             <tr>
               <th className="text-left p-2">Asli</th>
               <th className="text-left p-2">Pendek</th>
@@ -56,25 +59,25 @@ export default function DashboardPage() {
           </thead>
           <tbody>
             {links.map((link) => (
-              <tr key={link.id} className="border-t">
+            <tr key={link.id || link.shortenedUrl} className="border-t">
                 <td className="p-2 truncate max-w-[200px]">{link.originalUrl}</td>
                 <td className="p-2 text-blue-600 underline">
-                  <a href={link.shortUrl} target="_blank" rel="noopener noreferrer">
-                    {link.shortUrl}
-                  </a>
+                <a href={link.shortenedUrl} target="_blank" rel="noopener noreferrer">
+                    {link.shortenedUrl}
+                </a>
                 </td>
                 <td className="p-2 text-gray-500">
-                  {new Date(link.createdAt).toLocaleDateString()}
+                {new Date(link.createdAt).toLocaleDateString()}
                 </td>
                 <td className="p-2 text-center">
-                  <button
-                    onClick={() => copyToClipboard(link.shortUrl)}
+                <button
+                    onClick={() => copyToClipboard(link.shortenedUrl)}
                     className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-                  >
+                >
                     Copy
-                  </button>
+                </button>
                 </td>
-              </tr>
+            </tr>
             ))}
           </tbody>
         </table>
