@@ -5,8 +5,6 @@ export type UrlDocument = Url & Document;
 
 @Schema()
 export class Url {
-  @Prop({ required: true })
-  id: number;
 
   @Prop()
   shortenedUrl: string;
