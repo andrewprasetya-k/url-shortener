@@ -110,7 +110,7 @@ export default function DashboardPage() {
                 </a></td>
                 <td className="p-2 text-blue-600 underline">
                 <a href={`http://localhost:3000/${link.shortenedUrl}`} target="_blank" rel="noopener noreferrer">
-                    {link.shortenedUrl}
+                    {`http://localhost:3000/${link.shortenedUrl}`}
                 </a>
                 </td>
                 <td className="p-2 text-gray-500">
