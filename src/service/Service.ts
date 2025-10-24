@@ -18,9 +18,10 @@ export class UrlService {
     return this.urlModel.find().exec();
   }
 
-  async findOne(id: string): Promise<Url | null> {
-    return this.urlModel.findById(id).exec();
+  async findByShortened(shortened: string): Promise<Url | null> {
+    return this.urlModel.findOne({ shortenedUrl: shortened }).exec();
   }
+
 
   async update(id: string, originalUrl: string): Promise<Url | null> {
     return this.urlModel.findByIdAndUpdate(

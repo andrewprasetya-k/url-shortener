@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param } from '@nestjs/common';
 import { UrlService } from '../Service/Service';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
@@ -37,9 +37,9 @@ export class AppController {
     return this.appService.findAll();
   }
 
-  @Get(':id')
-  async getUrlById(@Body('id') id:number){
-    return this.appService.findOne(id.toString());
+  @Get('/:url')
+  async getUrlById(@Param('url') id:number){
+    return this.appService.findByShortened(id.toString());
   }
 }
 
