@@ -29,7 +29,8 @@ export default function DashboardPage() {
     }
   };
 
-  const handleSubmit = async () =>{
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
+    e.preventDefault();
     try {
         const res = await fetch("http://localhost:3000/",{
             method:'POST',
@@ -70,7 +71,22 @@ export default function DashboardPage() {
   return (
     <div className="max-w-3xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">📊 Dashboard Shortlink</h1>
-
+      <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
+        <input
+          type="url"
+          placeholder="Masukkan URL asli..."
+          value={newUrl}
+          onChange={(e) => setNewUrl(e.target.value)}
+          className="flex-1 border rounded p-2"
+          required
+        />
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Shorten
+        </button>
+      </form>
       {links.length === 0 ? (
         <p className="text-gray-500">Belum ada link yang dibuat.</p>
       ) : (
@@ -114,3 +130,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+
