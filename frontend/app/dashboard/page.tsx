@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 
 interface ShortLink {
-  id: string;
+  _id: string;
   originalUrl: string;
   shortenedUrl: string;
   createdAt: string;
@@ -14,6 +14,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [newUrl, setNewUrl] = useState('');
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
 
   const fetchLinks = async () => {
@@ -59,9 +60,10 @@ export default function DashboardPage() {
   }, []);
 
   
-  const copyToClipboard = (text: string) => {
-      navigator.clipboard.writeText(`http://localhost:3000/${text}`);
-      alert('Link disalin ke clipboard!');
+    const copyToClipboard = (id: string,text: string) => {
+        setCopiedId(id);
+        setTimeout(() => setCopiedId(null), 2000); // reset after 2 detik;
+        navigator.clipboard.writeText(`http://localhost:3000/${text}`);
     };
     
     if (loading) return <p className="p-6 text-gray-500">Memuat data link...</p>;
@@ -101,7 +103,7 @@ export default function DashboardPage() {
           </thead>
           <tbody>
             {links.map((link) => (
-            <tr key={link.id || link.shortenedUrl} className="border-t">
+            <tr key={link._id || link.shortenedUrl} className="border-t">
                 <td className="p-2 truncate max-w-[200px]">               
                 <a href={link.originalUrl} target="_blank" rel="noopener noreferrer">
                     {link.originalUrl}
@@ -115,12 +117,16 @@ export default function DashboardPage() {
                 {new Date(link.createdAt).toLocaleDateString()}
                 </td>
                 <td className="p-2 text-center">
+                {copiedId === link._id ? (
+                <span className="text-green-500">Copied!</span>
+                ) : (
                 <button
-                    onClick={() => copyToClipboard(link.shortenedUrl)}
+                    onClick={() => copyToClipboard(link._id, link.shortenedUrl)}
                     className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
                 >
                     Copy
                 </button>
+                )}
                 </td>
             </tr>
             ))}
