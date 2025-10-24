@@ -17,7 +17,7 @@ export default function DashboardPage() {
   useEffect(() => {
     async function fetchLinks() {
       try {
-        const res = await fetch('http://localhost:3000/api/links'); // ganti ke endpoint NestJS kamu
+        const res = await fetch('http://localhost:3000/'); // ganti ke endpoint NestJS kamu
         if (!res.ok) throw new Error('Gagal mengambil data link');
         const data = await res.json();
         setLinks(data);
