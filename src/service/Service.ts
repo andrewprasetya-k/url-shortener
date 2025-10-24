@@ -8,18 +8,30 @@ import { CreateUrlDto } from '../Dto/Dto';
 export class UrlService {
   constructor(@InjectModel(Url.name) private urlModel: Model<UrlDocument>) {}
 
-  async create(createUrlDto: CreateUrlDto): Promise<Url> {
+  async create(createUrlDto: CreateUrlDto): Promise<Url|String> {
     const shortenedUrl = Math.random().toString(36).substring(2, 8);
     const newUrl = new this.urlModel({ ...createUrlDto, shortenedUrl });
-    return newUrl.save();
+    try {
+      return newUrl.save();
+    } catch (error) {
+      return `Error creating shortened URL ${error}`;
+    }
   }
 
-  async findAll(): Promise<Url[]> {
-    return this.urlModel.find().exec();
+  async findAll(): Promise<Url[]|String|null> {
+    try {
+      return this.urlModel.find().exec();
+    } catch (error) {
+      return 'No URLs found';
+    }
   }
 
-  async findByShortened(shortened: string): Promise<Url | null> {
-    return this.urlModel.findOne({ shortenedUrl: shortened }).exec();
+  async findByShortened(shortened: string): Promise<Url|String|null> {
+    try {
+      return this.urlModel.findOne({ shortenedUrl: shortened }).exec();
+    } catch (error) {
+      return `Url with shortenedUrl=${shortened} not found`;
+    }
   }
 
 
@@ -31,13 +43,13 @@ export class UrlService {
     ).exec();
   }
 
-  async removeByShortened(url: string): Promise<Url> {
+  async removeByShortened(url: string): Promise<String> {
     const deleted = await this.urlModel.findOneAndDelete({ shortenedUrl: url }).exec();
 
     if (!deleted) {
       throw new NotFoundException(`URL with shortenedUrl=${url} not found`);
     }
 
-    return deleted;
+    return `Url ${url} is successfully deleted`;
   }
 }
