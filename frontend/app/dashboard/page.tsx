@@ -14,23 +14,23 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    async function fetchLinks() {
-      try {
-        const res = await fetch('http://localhost:3000/'); // ganti ke endpoint NestJS kamu
-        if (!res.ok) throw new Error('Gagal mengambil data link');
-        const data = await res.json();
-        setLinks(data);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
+  const fetchLinks = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/api/links"); // sesuaikan endpoint
+      if (!res.ok) throw new Error("Gagal mengambil data link");
+      const data = await res.json();
+      setLinks(data);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
     fetchLinks();
   }, []);
 
-  
   
   const copyToClipboard = (text: string) => {
       navigator.clipboard.writeText(`http://localhost:3000/${text}`);
