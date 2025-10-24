@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from '../service/Service';
+import { AppService } from '../Service/Service';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 
