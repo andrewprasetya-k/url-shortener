@@ -1,7 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UrlService } from '../Service/Service';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
+import { CreateUrlDto } from '../Dto/Dto';
 
 @Controller()
 export class AppController {
@@ -24,6 +25,11 @@ export class AppController {
     } catch (error) {
       return { status: 'error', message: (error as Error).message };
     }
+  }
+
+  @Post()
+  async createShortUrl(@Body() createUrlDto: CreateUrlDto) {
+    return this.appService.create(createUrlDto);
   }
 }
 

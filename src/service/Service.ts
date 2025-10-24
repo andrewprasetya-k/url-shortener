@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Url, UrlDocument } from '../Model/Url';
-import { CreateUrlDto } from '../DTO/DTO';
+import { CreateUrlDto } from '../Dto/Dto';
 
 @Injectable()
 export class UrlService {
