@@ -11,7 +11,7 @@ export class AppController {
     @InjectConnection() private readonly connection: Connection,
   ) {}
 
-  @Get()
+  @Get('test-db')
   async testDb() {
     try {
       const db = this.connection.db;
@@ -30,6 +30,16 @@ export class AppController {
   @Post()
   async createShortUrl(@Body() createUrlDto: CreateUrlDto) {
     return this.appService.create(createUrlDto);
+  }
+
+  @Get()
+  async getAllUrl(){
+    return this.appService.findAll();
+  }
+
+  @Get(':id')
+  async getUrlById(@Body('id') id:number){
+    return this.appService.findOne(id.toString());
   }
 }
 
