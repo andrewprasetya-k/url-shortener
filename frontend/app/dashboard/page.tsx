@@ -33,7 +33,7 @@ export default function DashboardPage() {
   
   
   const copyToClipboard = (text: string) => {
-      navigator.clipboard.writeText(text);
+      navigator.clipboard.writeText(`http://localhost:3000/${text}`);
       alert('Link disalin ke clipboard!');
     };
     
@@ -60,9 +60,12 @@ export default function DashboardPage() {
           <tbody>
             {links.map((link) => (
             <tr key={link.id || link.shortenedUrl} className="border-t">
-                <td className="p-2 truncate max-w-[200px]">{link.originalUrl}</td>
+                <td className="p-2 truncate max-w-[200px]">               
+                <a href={link.originalUrl} target="_blank" rel="noopener noreferrer">
+                    {link.originalUrl}
+                </a></td>
                 <td className="p-2 text-blue-600 underline">
-                <a href={link.shortenedUrl} target="_blank" rel="noopener noreferrer">
+                <a href={`http://localhost:3000/${link.shortenedUrl}`} target="_blank" rel="noopener noreferrer">
                     {link.shortenedUrl}
                 </a>
                 </td>
