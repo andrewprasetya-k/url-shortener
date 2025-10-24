@@ -15,7 +15,7 @@ export default function DashboardPage() {
   const [error, setError] = useState('');
   const [newUrl, setNewUrl] = useState('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
-
+  const [deletedId, setDeletedId] = useState<string | null>(null);
 
   const fetchLinks = async () => {
     try {
@@ -55,10 +55,33 @@ export default function DashboardPage() {
     }
   }
 
+    const handleDelete = async (id:string) =>{
+    try {
+        const res = await fetch(`http://localhost:3000/${id}`,{
+            method:'DELETE'})
+        if (!res.ok){
+            console.log(res.text());
+            throw new Error("Gagal menambahkan link");
+        }
+        setNewUrl(""); // reset input
+        fetchLinks(); // refresh data
+    } catch (error:any) {
+        setError(error.message);
+    }finally{
+        setLoading(false);
+    }
+  }
+
   useEffect(() => {
     fetchLinks();
   }, []);
 
+    const deleteClicked = (id: string) => {
+        setDeletedId(id);
+        setTimeout(() => setDeletedId(null), 2000); // reset after 2 detik;
+        handleDelete(id);
+        fetchLinks();
+    }
   
     const copyToClipboard = (id: string,text: string) => {
         setCopiedId(id);
@@ -98,7 +121,7 @@ export default function DashboardPage() {
               <th className="text-left p-2">Asli</th>
               <th className="text-left p-2">Pendek</th>
               <th className="text-left p-2">Tanggal</th>
-              <th className="p-2">Aksi</th>
+              <th className="p-2" colSpan={2}>Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -127,6 +150,14 @@ export default function DashboardPage() {
                     Copy
                 </button>
                 )}
+                </td>
+                <td className="p-2 text-center">
+                <button
+                    onClick={() => deleteClicked(link.shortenedUrl)}
+                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+                >
+                    Delete
+                </button>
                 </td>
             </tr>
             ))}
