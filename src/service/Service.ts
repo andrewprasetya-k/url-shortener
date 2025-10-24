@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Url, UrlDocument } from '../Model/Url';
@@ -31,7 +31,13 @@ export class UrlService {
     ).exec();
   }
 
-  async remove(id: string): Promise<Url | null> {
-    return this.urlModel.findByIdAndDelete(id).exec();
+  async removeByShortened(url: string): Promise<Url> {
+    const deleted = await this.urlModel.findOneAndDelete({ shortenedUrl: url }).exec();
+
+    if (!deleted) {
+      throw new NotFoundException(`URL with shortenedUrl=${url} not found`);
+    }
+
+    return deleted;
   }
 }

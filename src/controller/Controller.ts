@@ -38,12 +38,12 @@ export class UrlController {
   }
 
   @Get('/:url')
-  async getUrlById(@Param('url') id:string){
-    return this.urlService.findByShortened(id.toString());
+  async getUrlById(@Param('url') url:string){
+    return this.urlService.findByShortened(url.toString());
   }
 
   @Delete('/:url')
-  async deleteUrl(@Param('url') id:string){
-    return this.urlService.remove(id.toString());
+  async deleteUrl(@Param('url') url:string){
+    return this.urlService.removeByShortened(url.toString());
   }
 }
