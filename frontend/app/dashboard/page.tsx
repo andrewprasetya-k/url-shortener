@@ -96,21 +96,23 @@ export default function DashboardPage() {
   return (
     <div className="max-w-3xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">Dashboard Shortlink</h1>
-      <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
-        <input
-          type="url"
-          placeholder="Masukkan URL asli..."
-          value={newUrl}
-          onChange={(e) => setNewUrl(e.target.value)}
-          className="flex-1 border rounded-full p-2 pl-4"
-          required
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-600"
-        >
-          Shorten
-        </button>
+      <form onSubmit={handleSubmit} className="mb-6">
+        <div className="flex w-full items-center rounded-full border border-gray-300 p-1">
+          <input
+            type="url"
+            placeholder="Masukkan URL asli..."
+            value={newUrl}
+            onChange={(e) => setNewUrl(e.target.value)}
+            className="flex-1 border-none bg-transparent p-2 pl-4 focus:ring-0"
+            required
+          />
+          <button
+            type="submit"
+            className="rounded-full bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+          >
+            Shorten
+          </button>
+        </div>
       </form>
       {links.length === 0 ? (
         <p className="text-gray-500">Belum ada link yang dibuat.</p>
