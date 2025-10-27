@@ -6,6 +6,7 @@ interface ShortLink {
   _id: string;
   originalUrl: string;
   shortenedUrl: string;
+  timesClicked:number;
   createdAt: string;
 }
 
@@ -76,11 +77,10 @@ export default function DashboardPage() {
     fetchLinks();
   }, []);
 
-    const deleteClicked = (id: string) => {
+    const deleteClicked = async (id: string) => {
         setDeletedId(id);
         setTimeout(() => setDeletedId(null), 2000); // reset after 2 detik;
-        handleDelete(id);
-        fetchLinks();
+        await handleDelete(id);
     }
   
     const copyToClipboard = (id: string,text: string) => {
@@ -121,23 +121,27 @@ export default function DashboardPage() {
               <th className="p-2 bg-gray-300 rounded-l-full">Asli</th>
               <th className="p-2 bg-gray-300">Pendek</th>
               <th className="p-2 bg-gray-300">Tanggal</th>
+              <th className="p-2 bg-gray-300">Jumlah Klik</th>
               <th className="p-2 bg-gray-300 rounded-r-full" colSpan={2}>Aksi</th>
             </tr>
           </thead>
           <tbody>
             {links.map((link) => (
             <tr key={link._id || link.shortenedUrl}>
-                <td className="p-2 truncate max-w-[200px] text-blue-600 underline">               
+                <td className="p-2 truncate max-w-[200px] text-blue-600 underline whitespace-break-spaces">               
                 <a href={link.originalUrl} target="_blank" rel="noopener noreferrer">
                     {link.originalUrl}
                 </a></td>
-                <td className="p-2 text-blue-600 underline">
+                <td className="p-2 text-blue-600 underline whitespace-break-spaces">
                 <a href={`http://localhost:3000/${link.shortenedUrl}`} target="_blank" rel="noopener noreferrer">
                     {`http://localhost:3000/${link.shortenedUrl}`}
                 </a>
                 </td>
                 <td className="p-2 text-gray-500">
                 {new Date(link.createdAt).toLocaleDateString()}
+                </td>
+                <td className="p-2 text-gray-500">
+                {link.timesClicked || 0}
                 </td>
                 <td className="p-2 text-center">
                 {copiedId === link._id ? (

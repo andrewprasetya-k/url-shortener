@@ -11,7 +11,7 @@ export class UrlService {
   // CREATE
   async create(createUrlDto: CreateUrlDto): Promise<Url> {
     const shortenedUrl = Math.random().toString(36).substring(2, 8);
-    const newUrl = new this.urlModel({ ...createUrlDto, shortenedUrl });
+    const newUrl = new this.urlModel({ ...createUrlDto, shortenedUrl, timesClicked: 0 });
 
     try {
       return await newUrl.save();
@@ -22,19 +22,17 @@ export class UrlService {
 
   // READ ALL
   async findAll(): Promise<Url[]> {
-    const urls = await this.urlModel.find().exec();
-    if (!urls || urls.length === 0) {
-      throw new NotFoundException('No URLs found');
-    }
-    return urls;
+    return this.urlModel.find().exec();
   }
 
   // READ BY SHORTENED URL
   async findByShortened(shortened: string): Promise<string> {
     const url = await this.urlModel.findOne({ shortenedUrl: shortened }).exec();
     if (!url) {
-      throw new NotFoundException(`URL with shortenedUrl="${shortened}" not found`);
+      throw new NotFoundException(`${shortened} not found`);
     }
+    url.timesClicked += 1;
+    await url.save();
     return url.originalUrl;
   }
 

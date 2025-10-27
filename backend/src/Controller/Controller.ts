@@ -40,6 +40,9 @@ export class UrlController {
 
   @Get('/:url')
   async getUrlById(@Param('url') url:string, @Res() res: express.Response){
+    if (!url) {
+      return res.status(400).send('Url Not Found');
+    }
     return res.redirect(await this.urlService.findByShortened(url.toString()));
   }
 

@@ -11,6 +11,9 @@ export class Url {
   @Prop()
   originalUrl: string;
 
+  @Prop({default:0})
+  timesClicked: number;
+  
   @Prop({ default: Date.now })
   createdAt: Date;
 }
