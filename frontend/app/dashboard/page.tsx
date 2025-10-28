@@ -26,7 +26,20 @@ export default function DashboardPage() {
   const fetchLinks = async () => {
     try {
       setError('');
-      const res = await fetch("http://localhost:3000/");
+      const token = localStorage.getItem('access_token');
+      
+      if (!token) {
+        setError('Not authenticated. Please login.');
+        setLoading(false);
+        return;
+      }
+      
+      const res = await fetch("http://localhost:3000/my-urls", {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
       if (!res.ok) throw new Error("Failed to fetch links");
       const data = await res.json();
       setLinks(data);
@@ -44,10 +57,18 @@ export default function DashboardPage() {
     setError('');
     
     try {
+      const token = localStorage.getItem('access_token');
+      
+      if (!token) {
+        setError('Not authenticated. Please login.');
+        return;
+      }
+      
       const res = await fetch("http://localhost:3000/", {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           urlName: newUrlName,
@@ -61,6 +82,7 @@ export default function DashboardPage() {
       }
       
       setNewOriginalUrl("");
+      setNewUrlName("");
       await fetchLinks();
     } catch (error: any) {
       setError(error.message || "Failed to create short link");
@@ -72,8 +94,18 @@ export default function DashboardPage() {
   const handleDelete = async (id: string) => {
     try {
       setError('');
+      const token = localStorage.getItem('access_token');
+      
+      if (!token) {
+        setError('Not authenticated. Please login.');
+        return;
+      }
+      
       const res = await fetch(`http://localhost:3000/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
       
       if (!res.ok) {

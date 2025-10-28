@@ -7,8 +7,8 @@ import { sidebar } from './config';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() || '';
-  const hideSidebar = pathname === '/login';
-  const hideTopbar = pathname === '/login';
+  const hideSidebar = pathname === '/login' || pathname === '/register';
+  const hideTopbar = pathname === '/login' || pathname === '/register';
 
   const pageTitle =
     pathname

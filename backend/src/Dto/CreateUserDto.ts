@@ -13,5 +13,3 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'Email should not be empty' })
   email: string;
 }
-
-

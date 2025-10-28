@@ -1,44 +1,37 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { useState } from 'react';
 
 export default function LoginPage() {
-  const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
 
     try {
-      const res = await fetch('http://localhost:3000/auth/login', {
+      const res = await fetch('http://localhost:3000/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, email }),
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        // Simpan token ke localStorage
-        localStorage.setItem('access_token', data.access_token);
-        
-        setMessage('Login successful!');
-        
-        // Redirect menggunakan router.push
-        setTimeout(() => {
-          router.push('/dashboard');
-        }, 500);
+        setMessage('Register successful!');
+        redirect('/login');
       } else {
-        setMessage(`${data.message || 'Login failed'}`);
+        setMessage(`${data.message || 'Register account failed'}`);
       }
     } catch (error:any) {
       setMessage(error.message || "An error occurred");
+
     }
     finally {
       setLoading(false);
@@ -52,7 +45,7 @@ export default function LoginPage() {
         className="bg-white/80 backdrop-blur-md p-8 rounded-2xl shadow-xl w-full max-w-sm space-y-5"
       >
         <h1 className="text-3xl font-extrabold text-center text-blue-700">
-          Login
+          Register Account
         </h1>
 
         <div>
@@ -80,21 +73,31 @@ export default function LoginPage() {
             className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>
+        
+        <div>
+          <label className="block text-sm font-semibold text-gray-600 mb-1">
+            Email
+          </label>
+          <input
+            type="email"
+            placeholder="Masukkan password"
+            value={email}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
 
         <button
           type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200 font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed"
+          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200 font-semibold"
         >
-          {loading ? 'Loading...' : 'Login'}
+          Login
         </button>
-
-        <a href="/register">belum punya akun</a>
 
         {message && (
           <p
             className={`text-center text-sm font-medium ${
-              message.includes('successful') ? 'text-green-600' : 'text-red-600'
+              message.includes('✅') ? 'text-green-600' : 'text-red-600'
             }`}
           >
             {message}
