@@ -9,9 +9,12 @@ export type UserDocument = User & Document;
 export class User {
   @Prop()
   username: string;
-
+  
   @Prop()
   password: string;
+  
+  @Prop()
+  email: string;
 
   @Prop({ default: Date.now })
   createdAt: Date;
