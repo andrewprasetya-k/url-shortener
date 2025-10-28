@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post, Param, Delete, Res } from '@nestjs/common';
-import { UrlService } from '../Service/Service';
+import { UrlService } from '../Service/UrlService';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
-import { CreateUrlDto } from '../Dto/Dto';
+import { UrlDto } from '../Dto/UrlDto';
 import express from 'express';
 
 @Controller()
@@ -29,7 +29,7 @@ export class UrlController {
   }
 
   @Post()
-  async createShortUrl(@Body() createUrlDto: CreateUrlDto) {
+  async createShortUrl(@Body() createUrlDto: UrlDto) {
     return this.urlService.create(createUrlDto);
   }
 

@@ -1,6 +1,6 @@
 import { IsUrl } from 'class-validator';
 
-export class CreateUrlDto {
+export class UrlDto {
   @IsUrl()
   originalUrl: string;
 }
