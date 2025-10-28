@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en">
-      <body className="antialiased bg-yellow-50 flex min-h-screen">
+      <body className="antialiased flex min-h-screen">
         {!hideSidebar && <Sidebar />}
         <div className={`flex-1 flex flex-col ${!hideSidebar ? sidebar.marginLeft : ''}`}>
           {!hideTopbar && <Topbar title={pageTitle} />}

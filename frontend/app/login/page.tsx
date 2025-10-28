@@ -11,7 +11,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     // Dummy check (belum konek backend)
-    if (username === 'admin' && password === '12345') {
+    if (username === 'admin' && password === 'admin') {
       setMessage('✅ Login sukses!');
       redirect('/dashboard');
     } else {

@@ -21,16 +21,9 @@ export default function Sidebar() {
       <aside
         className={`fixed top-0 left-0 h-full text-gray-700 ${sidebar.width} p-4 py-6 space-y-6 transform transition-transform duration-300 z-40
         ${open ? 'translate-x-0' : '-translate-x-full sm:translate-x-0'}`}      >
-        <h2 className="text-2xl font-bold text-center mb-10">Url Shortner</h2>
+        <h2 className="text-2xl font-bold pl-2 mb-10">Url Shortener</h2>
 
         <nav className="space-y-3">
-          <Link
-            href="/"
-            className="flex items-center gap-2 p-2 rounded hover:bg-gray-200 transition"
-          >
-            <Home size={18} /> Home
-          </Link>
-
           <Link
             href="/dashboard"
             className="flex items-center gap-2 p-2 rounded hover:bg-gray-200 transition"
