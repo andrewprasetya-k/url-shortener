@@ -30,6 +30,11 @@ export class UrlService {
     return this.urlModel.find().exec();
   }
 
+  // READ BY USER ID
+  async findByUserId(userId: string): Promise<Url[]> {
+    return this.urlModel.find({ userId }).exec();
+  }
+
   // READ BY SHORTENED URL
   async findByShortened(shortened: string): Promise<string> {
     const url = await this.urlModel.findOne({ shortenedUrl: shortened }).exec();
@@ -63,7 +68,7 @@ export class UrlService {
       throw new NotFoundException(`URL with shortenedUrl="${shortened}" not found`);
     }
 
-    if (url.userId !== userId) {
+    if (url.userId.toString() !== userId) {
       throw new NotFoundException(`You don't have permission to delete this URL`);
     }
 

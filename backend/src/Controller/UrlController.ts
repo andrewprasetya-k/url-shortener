@@ -39,6 +39,12 @@ export class UrlController {
     return this.urlService.create(createUrlDto, user.userId);
   }
 
+  @Get('my-urls')
+  @UseGuards(JwtAuthGuard)
+  async getMyUrls(@CurrentUser() user: { userId: string; username: string }) {
+    return this.urlService.findByUserId(user.userId);
+  }
+
   // @Get()
   // async getAllUrl(){
   //   return this.urlService.findAll();

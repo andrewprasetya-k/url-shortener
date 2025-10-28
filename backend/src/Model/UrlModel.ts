@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export type UrlDocument = Url & Document;
 
@@ -11,8 +11,8 @@ export class Url {
   @Prop()
   shortenedUrl: string;
 
-  @Prop({ required: true })
-  userId: string;
+  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
+  userId: Types.ObjectId;
   
   @Prop()
   originalUrl: string;
