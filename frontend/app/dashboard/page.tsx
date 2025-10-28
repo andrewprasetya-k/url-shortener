@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Copy, Trash2, ExternalLink, Link2, TrendingUp, ChartLine, Calendar, Check, MousePointerClick } from 'lucide-react';
 import { url } from 'inspector';
+import Topbar from '../components/Topbar';
 
 interface ShortLink {
   _id: string;
@@ -119,7 +120,7 @@ export default function DashboardPage() {
   const totalLinks = links.length;
   if (loading) {
     return (
-      <div className="min-h-screen bg-linear-to-br from-blue-40 to-indigo-100 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin h-12 w-12 border-b-2 border-blue-600"></div>
           <p className="mt-4 text-gray-600">Loading your links...</p>
@@ -129,8 +130,9 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-blue-50 py-8 px-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-blue-50">
+      <Topbar />
+      <div className="max-w-6xl mx-auto mt-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           <div className="bg-white p-6 border border-gray-100 rounded-md">
             <div className="flex items-center justify-between">
