@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "lucide-react": "^0.548.0",
     "mongoose-sequence": "^6.0.1"
   }
 }
