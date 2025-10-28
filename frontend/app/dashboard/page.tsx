@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Copy, Trash2, ExternalLink, Link2, TrendingUp, ChartLine, Calendar, MousePointerClick } from 'lucide-react';
+import { Copy, Trash2, ExternalLink, Link2, TrendingUp, ChartLine, Calendar, Check, MousePointerClick } from 'lucide-react';
 import { url } from 'inspector';
 
 interface ShortLink {
@@ -237,71 +237,83 @@ export default function DashboardPage() {
           </div>
         )}
         {filteredLinks.map(link => (
-          <div key={link._id} className="bg-white border border-gray-100 p-4 mb-4 flex flex-col sm:justify-between">
-            {link.urlName?
-            <div className="flex-1 p-2 my-4 bg-gray-300 mb-4 sm:mb-0">
-              <h3>Link Name</h3>
-              <span className="truncate">{link.urlName}</span>
-            </div>
-            : null}
-            <div className="flex-1 p-2 my-4 bg-gray-300 mb-4 sm:mb-0">
-              <h3>Original Url</h3>
-              <a 
-                href={link.originalUrl} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 flex items-center gap-2 max-w-xs truncate"
-              >
-                <ExternalLink className="w-4 h-4 shrink-0" />
-                <span className="truncate">{link.originalUrl}</span>
-              </a>
-            </div>
-            <div className="flex-1 p-2 my-4 bg-gray-300 mb-4 sm:mb-0">
-              <h3>Shortened Url</h3>
-              <a 
-                href={`http://localhost:3000/${link.shortenedUrl}`}
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 font-mono text-sm"
-              >
-                {`http://localhost:3000/${link.shortenedUrl}`}
-              </a>
-            </div>
-            <div className="my-2 sm:mb-0">
-              <span className="inline-flex items-center px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800">
-                <ChartLine className="w-4 h-4 mr-2" />
-                {link.timesClicked} Clicks
+            <div key={link._id} className="bg-white border border-gray-100 p-4 mb-4 flex flex-col sm:justify-between">
+            {link.urlName ? (
+              <div className="flex-1 p-2 sm:mb-0">
+              <span className="truncate font-semibold text-2xl sm:text-3xl text-gray-900">
+                {link.urlName}
               </span>
-              <span className="inline-flex items-center px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800">
-                <Calendar className="w-4 h-4 mx-2" />
+              </div>
+            ) : null}
+            <div className="flex-1 pl-2 mt-2 sm:mb-0">
+              <a
+              href={`http://localhost:3000/${link.shortenedUrl}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 flex items-center gap-2 max-w-xs truncate text-lg sm:text-xl font-medium"
+              >
+              {`http://localhost:3000/${link.shortenedUrl}`}
+              </a>
+            </div>
+            <div className="flex-1 pl-2 mt-2 sm:mb-0">
+              <a
+              href={link.originalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-700 hover:text-blue-800 flex items-center gap-2 max-w-xs truncate text-sm sm:text-base"
+              >
+              <span className="truncate">{link.originalUrl}</span>
+              </a>
+            </div>
+            <div className="my-2 sm:mb-0 flex flex-wrap gap-2">
+              <span className="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-800 bg-gray-50 rounded">
+              <ChartLine className="w-4 h-4 mr-2" />
+              <span className="text-sm">{link.timesClicked} Clicks</span>
+              </span>
+              <span className="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-600 bg-gray-50 rounded">
+              <Calendar className="w-4 h-4 mx-2" />
+              <span className="text-xs text-gray-500">
                 {new Date(link.createdAt).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric'
-              })} 
+                })}
+              </span>
               </span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 mt-4 sm:mb-0">
               {copiedId === link._id ? (
-                <span className="text-green-600 text-sm font-medium">Copied!</span>
+              <button
+                disabled
+                className="flex items-center gap-2 p-2 text-green-600 bg-green-50 rounded"
+                title="Copied"
+                aria-label="Link copied"
+              >
+                <Check className="w-5 h-5" />
+                <span className="text-sm font-medium text-green-600">Copied!</span>
+              </button>
               ) : (
-                <button
-                  onClick={() => copyToClipboard(link._id, link.shortenedUrl)}
-                  className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors"
-                  title="Copy to clipboard"
-                >
-                  <Copy className="w-5 h-5" />
-                </button>
+              <button
+                onClick={() => copyToClipboard(link._id, link.shortenedUrl)}
+                className="flex items-center gap-2 p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors rounded"
+                title="Copy to clipboard"
+                aria-label="Copy shortened URL to clipboard"
+              >
+                <Copy className="w-5 h-5" />
+                <span className="text-sm">Copy</span>
+              </button>
               )}
               <button
-                onClick={() => handleDelete(link.shortenedUrl)}
-                className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 transition-colors"
-                title="Delete link"
+              onClick={() => handleDelete(link.shortenedUrl)}
+              className="flex items-center gap-2 p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 transition-colors rounded"
+              title="Delete link"
+              aria-label="Delete shortened URL"
               >
-                <Trash2 className="w-5 h-5" />
+              <Trash2 className="w-5 h-5" />
+              <span className="text-sm">Delete</span>
               </button>
             </div>
-          </div>
+            </div>
         ))}
       </div>
     </div>
