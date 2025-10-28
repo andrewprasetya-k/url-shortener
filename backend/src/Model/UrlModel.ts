@@ -10,6 +10,9 @@ export class Url {
 
   @Prop()
   shortenedUrl: string;
+
+  @Prop()
+  creatorId: string;
   
   @Prop()
   originalUrl: string;
