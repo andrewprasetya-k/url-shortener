@@ -128,10 +128,10 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-blue-50">
+    <div className="min-h-screen">
       <div className="max-w-6xl mx-auto mt-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          <div className="bg-white p-6 border border-gray-100 rounded-md">
+          <div className="bg-white p-6 border border-gray-200 rounded-md">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-500 text-sm font-medium">Total Links</p>
@@ -142,7 +142,7 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
-          <div className="bg-white p-6 border border-gray-100 rounded-md">
+          <div className="bg-white p-6 border border-gray-200 rounded-md">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-500 text-sm font-medium">Total Clicks</p>
@@ -155,7 +155,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white p-6 mb-8 border border-gray-100 rounded-md">
+        <div className="bg-white p-6 mb-8 border border-gray-200 rounded-md">
           <h2 className="text-xl font-semibold text-gray-800 mb-8">Create New Short Link</h2>
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row gap-3">
@@ -210,7 +210,7 @@ export default function DashboardPage() {
         </div>
 
         {links.length > 0 && (
-          <div className="bg-white p-6 mb-4 border-gray-100 rounded-md">
+          <div className="bg-white p-6 mb-4 border border-gray-200 rounded-md">
             <div className="flex flex-col sm:flex-row gap-4">
               <input
                 type="text"
@@ -231,7 +231,7 @@ export default function DashboardPage() {
           </div>
         )}
         {filteredLinks.map(link => (
-            <div key={link._id} className="bg-white border-gray-100 p-4 mb-4 flex flex-col sm:justify-between rounded-md">
+            <div key={link._id} className="bg-white border border-gray-200 p-4 mb-4 flex flex-col sm:justify-between rounded-md">
             {link.urlName ? (
               <div className="flex-1 p-2 sm:mb-0">
               <span className="truncate font-semibold text-2xl sm:text-3xl text-gray-900">
