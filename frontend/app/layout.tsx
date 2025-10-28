@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {!hideSidebar && <Sidebar />}
         <div className={`flex-1 flex flex-col ${!hideSidebar ? sidebar.marginLeft : ''}`}>
           {!hideSidebar && <Topbar title={pageTitle}/>}
-          <main>{children}</main>
+          <main className='mt-16'>{children}</main>
         </div>
       </body>
     </html>
