@@ -1,13 +1,13 @@
+import * as AutoIncrementFactory from 'mongoose-sequence';
+import { Connection } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-
-export type UserDocument = User & Document;
+import { InjectConnection } from '@nestjs/mongoose';
 
 @Schema()
 export class User {
-  @Prop({unique:true})
+  @Prop()
   username: string;
-  
+
   @Prop()
   password: string;
 
@@ -16,3 +16,8 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+export const applyAutoIncrement = (connection: Connection) => {
+  const AutoIncrement = AutoIncrementFactory(connection);
+  UserSchema.plugin(AutoIncrement, { inc_field: 'id' });
+};
