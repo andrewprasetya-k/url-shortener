@@ -6,7 +6,19 @@ import { sidebar } from '../config';
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
-
+  const logout = async () => {
+    await fetch('http://localhost:3000/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ refresh_token: localStorage.getItem('refresh_token') }),
+    });
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    window.location.href = '/login';
+  }
   return (
     <>
       {/* Tombol toggle (muncul di layar kecil) */}
@@ -31,12 +43,14 @@ export default function Sidebar() {
             <LayoutDashboard size={18} /> Dashboard
           </Link>
 
-          <Link
-            href="/login"
-            className="flex items-center gap-2 p-2 rounded hover:bg-gray-200 transition"
-          >
+            <button
+            type="button"
+            onClick={logout}
+            aria-label="Logout"
+            className="w-full text-left flex items-center gap-2 p-2 rounded hover:bg-gray-200 transition"
+            >
             <LogOut size={18} /> Logout
-          </Link>
+            </button>
         </nav>
       </aside>
     </>
