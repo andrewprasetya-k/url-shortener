@@ -117,7 +117,6 @@ export default function DashboardPage() {
 
   const totalClicks = links.reduce((sum, link) => sum + link.timesClicked, 0);
   const totalLinks = links.length;
-
   if (loading) {
     return (
       <div className="min-h-screen bg-linear-to-br from-blue-40 to-indigo-100 flex items-center justify-center">
@@ -239,6 +238,12 @@ export default function DashboardPage() {
         )}
         {filteredLinks.map(link => (
           <div key={link._id} className="bg-white border border-gray-100 p-4 mb-4 flex flex-col sm:justify-between">
+            {link.urlName?
+            <div className="flex-1 p-2 my-4 bg-gray-300 mb-4 sm:mb-0">
+              <h3>Link Name</h3>
+              <span className="truncate">{link.urlName}</span>
+            </div>
+            : null}
             <div className="flex-1 p-2 my-4 bg-gray-300 mb-4 sm:mb-0">
               <h3>Original Url</h3>
               <a 
