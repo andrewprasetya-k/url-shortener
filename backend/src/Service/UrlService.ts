@@ -2,14 +2,14 @@ import { Injectable, NotFoundException, InternalServerErrorException } from '@ne
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Url, UrlDocument } from '../Model/UrlModel';
-import { UrlDto } from '../Dto/UrlDto';
+import { CreateUrlDto } from '../Dto/CreateUrlDto';
 
 @Injectable()
 export class UrlService {
   constructor(@InjectModel(Url.name) private urlModel: Model<UrlDocument>) {}
 
   // CREATE
-  async create(createUrlDto: UrlDto): Promise<Url> {
+  async create(createUrlDto: CreateUrlDto): Promise<Url> {
     const shortenedUrl = Math.random().toString(36).substring(2, 8);
     const newUrl = new this.urlModel({ ...createUrlDto, shortenedUrl, timesClicked: 0 });
 
