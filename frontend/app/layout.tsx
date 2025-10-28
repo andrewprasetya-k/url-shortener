@@ -3,6 +3,7 @@ import './globals.css';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import { usePathname } from 'next/navigation';
+import { sidebar } from './config';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() || '';
@@ -18,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="antialiased bg-gray-50 flex min-h-screen">
         {!hideSidebar && <Sidebar />}
-        <div className={`flex-1 flex flex-col ${!hideSidebar ? 'sm:ml-64' : ''}`}>
+        <div className={`flex-1 flex flex-col ${!hideSidebar ? sidebar.marginLeft : ''}`}>
           {!hideSidebar && <Topbar title={pageTitle}/>}
           <main>{children}</main>
         </div>
