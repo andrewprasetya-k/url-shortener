@@ -240,14 +240,11 @@ export default function DashboardPage() {
 
         {/* Empty state when there are no links at all */}
         {links.length === 0 && (
-          <div className="bg-white border border-dashed border-gray-200 rounded-md p-8 text-center max-w-3xl mx-auto">
+          <div className="bg-white border border-gray-200 rounded-md p-6 text-center">
         <div className="flex flex-col items-center gap-4">
           <MousePointerClick className="w-12 h-12 text-blue-500" />
           <h3 className="text-xl font-semibold text-gray-900">No short links yet</h3>
           <p className="text-gray-600">Create your first short link using the form above.</p>
-          <div className="mt-4 px-6 py-3 bg-blue-50 text-blue-700 rounded">
-            Total Links: {totalLinks} · Total Clicks: {totalClicks}
-          </div>
         </div>
           </div>
         )}
