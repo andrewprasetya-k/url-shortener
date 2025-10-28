@@ -26,7 +26,7 @@ export default function Sidebar() {
         <nav className="space-y-3">
           <Link
             href="/dashboard"
-            className="flex items-center gap-2 p-2 rounded hover:bg-gray-200 transition"
+            className="flex items-center gap-2 p-2 rounded bg-gray-200 transition"
           >
             <LayoutDashboard size={18} /> Dashboard
           </Link>
