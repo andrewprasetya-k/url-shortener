@@ -3,6 +3,8 @@ import { Connection } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { InjectConnection } from '@nestjs/mongoose';
 
+export type UserDocument = User & Document;
+
 @Schema()
 export class User {
   @Prop()
