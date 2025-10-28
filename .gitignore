@@ -1,3 +1,7 @@
+# Dependencies
+node_modules/
+
+# Frontend specific
 frontend/eslint.config.mjs
 frontend/package-lock.json
 frontend/package.json
