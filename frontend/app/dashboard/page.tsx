@@ -129,15 +129,10 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-50 py-8 px-4">
+    <div className="min-h-screen bg-blue-50 py-8 px-4">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">URL Shortener</h1>
-          <p className="text-gray-600">Create and manage your short links</p>
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          <div className="bg-white p-6 border border-gray-100">
+          <div className="bg-white p-6 border border-gray-100 rounded-md">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-500 text-sm font-medium">Total Links</p>
@@ -148,7 +143,7 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
-          <div className="bg-white p-6 border border-gray-100">
+          <div className="bg-white p-6 border border-gray-100 rounded-md">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-500 text-sm font-medium">Total Clicks</p>
@@ -161,7 +156,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white p-6 mb-8 border border-gray-100 border-dashed">
+        <div className="bg-white p-6 mb-8 border border-gray-100 rounded-md">
           <h2 className="text-xl font-semibold text-gray-800 mb-8">Create New Short Link</h2>
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row gap-3">
@@ -173,7 +168,7 @@ export default function DashboardPage() {
                   value={newUrlName}
                   onChange={(e) => setNewUrlName(e.target.value)}
                   onKeyDown={handleKeyPress}
-                  className="w-full px-4 py-3 my-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 my-4 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                   disabled={isSubmitting}
                 />
@@ -184,21 +179,21 @@ export default function DashboardPage() {
                   value={newOriginalUrl}
                   onChange={(e) => setNewOriginalUrl(e.target.value)}
                   onKeyDown={handleKeyPress}
-                  className="w-full px-4 py-3 my-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 my-4 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                   disabled={isSubmitting}
                 />
               </div>
             </div>
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3">
+              <div className="bg-red-50 border border-red-200 rounded-md text-red-700 px-4 py-3">
                 {error}
               </div>
             )}
               <button
                 onClick={handleSubmit}
                 disabled={isSubmitting || !newOriginalUrl}
-                className="px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <>
@@ -216,19 +211,19 @@ export default function DashboardPage() {
         </div>
 
         {links.length > 0 && (
-          <div className="bg-white p-6 mb-8 border border-gray-100">
+          <div className="bg-white p-6 mb-4 border-gray-100 rounded-md">
             <div className="flex flex-col sm:flex-row gap-4">
               <input
                 type="text"
                 placeholder="Search links..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="flex-1 px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as 'date' | 'clicks')}
-                className="px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="date">Sort by Date</option>
                 <option value="clicks">Sort by Clicks</option>
@@ -237,7 +232,7 @@ export default function DashboardPage() {
           </div>
         )}
         {filteredLinks.map(link => (
-            <div key={link._id} className="bg-white border border-gray-100 p-4 mb-4 flex flex-col sm:justify-between">
+            <div key={link._id} className="bg-white border-gray-100 p-4 mb-4 flex flex-col sm:justify-between rounded-md">
             {link.urlName ? (
               <div className="flex-1 p-2 sm:mb-0">
               <span className="truncate font-semibold text-2xl sm:text-3xl text-gray-900">
@@ -250,7 +245,7 @@ export default function DashboardPage() {
               href={`http://localhost:3000/${link.shortenedUrl}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-800 flex items-center gap-2 max-w-xs truncate text-lg sm:text-xl font-medium"
+              className="text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-2 max-w-xs truncate text-lg sm:text-xl font-medium"
               >
               {`http://localhost:3000/${link.shortenedUrl}`}
               </a>
@@ -260,7 +255,7 @@ export default function DashboardPage() {
               href={link.originalUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-700 hover:text-blue-800 flex items-center gap-2 max-w-xs truncate text-sm sm:text-base"
+              className="text-gray-700 hover:text-gray-800 hover:underline flex items-center gap-2 max-w-xs truncate text-sm sm:text-base"
               >
               <span className="truncate">{link.originalUrl}</span>
               </a>
@@ -305,7 +300,7 @@ export default function DashboardPage() {
               )}
               <button
               onClick={() => handleDelete(link.shortenedUrl)}
-              className="flex items-center gap-2 p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 transition-colors rounded"
+              className="flex items-center gap-2 p-2 text-red-600 hover:text-red-600 hover:bg-red-50 transition-colors rounded"
               title="Delete link"
               aria-label="Delete shortened URL"
               >
