@@ -130,31 +130,6 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen">
       <div className="max-w-6xl mx-auto mt-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          <div className="bg-white p-6 border border-gray-200 rounded-md">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-500 text-sm font-medium">Total Links</p>
-                <p className="text-3xl font-bold text-gray-800 mt-1">{totalLinks}</p>
-              </div>
-              <div className="bg-blue-100 p-3">
-                <Link2 className="w-6 h-6 text-blue-600" />
-              </div>
-            </div>
-          </div>
-          <div className="bg-white p-6 border border-gray-200 rounded-md">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-500 text-sm font-medium">Total Clicks</p>
-                <p className="text-3xl font-bold text-gray-800 mt-1">{totalClicks}</p>
-              </div>
-              <div className="bg-green-100 p-3">
-                <TrendingUp className="w-6 h-6 text-green-600" />
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div className="bg-white p-6 mb-8 border border-gray-200 rounded-md">
           <h2 className="text-xl font-semibold text-gray-800 mb-8">Create New Short Link</h2>
           <div className="space-y-4">
