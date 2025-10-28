@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Copy, Trash2, ExternalLink, Link2, TrendingUp, Calendar, MousePointerClick } from 'lucide-react';
+import { Copy, Trash2, ExternalLink, Link2, TrendingUp, ChartLine, Calendar, MousePointerClick } from 'lucide-react';
 import { url } from 'inspector';
 
 interface ShortLink {
@@ -262,17 +262,18 @@ export default function DashboardPage() {
                 {`http://localhost:3000/${link.shortenedUrl}`}
               </a>
             </div>
-            <div className="flex-1 p-2 my-4 bg-gray-300 mb-4 sm:mb-0">
-              <h3>Date Added</h3>
-              {new Date(link.createdAt).toLocaleDateString('en-US', {
+            <div className="my-2 sm:mb-0">
+              <span className="inline-flex items-center px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800">
+                <ChartLine className="w-4 h-4 mr-2" />
+                {link.timesClicked} Clicks
+              </span>
+              <span className="inline-flex items-center px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800">
+                <Calendar className="w-4 h-4 mx-2" />
+                {new Date(link.createdAt).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric'
-              })}
-            </div>
-            <div className="my-2 sm:mb-0">
-              <span className="inline-flex items-center px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800">
-                {link.timesClicked}
+              })} 
               </span>
             </div>
             <div className="flex items-center gap-2">
