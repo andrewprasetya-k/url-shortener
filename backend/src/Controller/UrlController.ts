@@ -1,8 +1,10 @@
-import { Body, Controller, Get, Post, Param, Delete, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Delete, Res, UseGuards } from '@nestjs/common';
 import { UrlService } from '../Service/UrlService';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { CreateUrlDto } from '../Dto/CreateUrlDto';
+import { JwtAuthGuard } from '../Auth/AuthGuard';
+import { CurrentUser } from '../Decorator/UserDecorator';
 import express from 'express';
 
 @Controller()
@@ -29,14 +31,18 @@ export class UrlController {
   }
 
   @Post()
-  async createShortUrl(@Body() createUrlDto: CreateUrlDto) {
-    return this.urlService.create(createUrlDto);
+  @UseGuards(JwtAuthGuard)
+  async createShortUrl(
+    @Body() createUrlDto: CreateUrlDto,
+    @CurrentUser() user: { userId: string; username: string }
+  ) {
+    return this.urlService.create(createUrlDto, user.userId);
   }
 
-  @Get()
-  async getAllUrl(){
-    return this.urlService.findAll();
-  }
+  // @Get()
+  // async getAllUrl(){
+  //   return this.urlService.findAll();
+  // }
 
   @Get('/:url')
   async getUrlById(@Param('url') url:string, @Res() res: express.Response){
@@ -47,7 +53,11 @@ export class UrlController {
   }
 
   @Delete('/:url')
-  async deleteUrl(@Param('url') url:string){
-    return this.urlService.removeByShortened(url.toString());
+  @UseGuards(JwtAuthGuard)
+  async deleteUrl(
+    @Param('url') url: string,
+    @CurrentUser() user: { userId: string; username: string }
+  ) {
+    return this.urlService.removeByShortened(url.toString(), user.userId);
   }
 }

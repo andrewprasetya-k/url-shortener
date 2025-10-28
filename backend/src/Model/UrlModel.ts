@@ -11,8 +11,8 @@ export class Url {
   @Prop()
   shortenedUrl: string;
 
-  @Prop()
-  creatorId: string;
+  @Prop({ required: true })
+  userId: string;
   
   @Prop()
   originalUrl: string;

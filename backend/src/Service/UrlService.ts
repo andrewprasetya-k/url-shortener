@@ -9,9 +9,14 @@ export class UrlService {
   constructor(@InjectModel(Url.name) private urlModel: Model<UrlDocument>) {}
 
   // CREATE
-  async create(createUrlDto: CreateUrlDto): Promise<Url> {
+  async create(createUrlDto: CreateUrlDto, userId: string): Promise<Url> {
     const shortenedUrl = Math.random().toString(36).substring(2, 8);
-    const newUrl = new this.urlModel({ ...createUrlDto, shortenedUrl, timesClicked: 0 });
+    const newUrl = new this.urlModel({ 
+      ...createUrlDto, 
+      shortenedUrl, 
+      timesClicked: 0,
+      userId 
+    });
 
     try {
       return await newUrl.save();
@@ -51,13 +56,18 @@ export class UrlService {
   // }
 
   // DELETE BY SHORTENED URL
-  async removeByShortened(shortened: string): Promise<{ message: string }> {
-    const deleted = await this.urlModel.findOneAndDelete({ shortenedUrl: shortened }).exec();
+  async removeByShortened(shortened: string, userId: string): Promise<{ message: string }> {
+    const url = await this.urlModel.findOne({ shortenedUrl: shortened }).exec();
 
-    if (!deleted) {
+    if (!url) {
       throw new NotFoundException(`URL with shortenedUrl="${shortened}" not found`);
     }
 
+    if (url.userId !== userId) {
+      throw new NotFoundException(`You don't have permission to delete this URL`);
+    }
+
+    await this.urlModel.findOneAndDelete({ shortenedUrl: shortened }).exec();
     return { message: `URL "${shortened}" successfully deleted` };
   }
 }
