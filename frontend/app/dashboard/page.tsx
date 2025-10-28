@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react';
 import { Copy, Trash2, ExternalLink, Link2, TrendingUp, ChartLine, Calendar, Check, MousePointerClick } from 'lucide-react';
 import { url } from 'inspector';
-import Topbar from '../components/Topbar';
-
 interface ShortLink {
   _id: string;
   urlName?:string;
@@ -131,7 +129,6 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-blue-50">
-      <Topbar />
       <div className="max-w-6xl mx-auto mt-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           <div className="bg-white p-6 border border-gray-100 rounded-md">
