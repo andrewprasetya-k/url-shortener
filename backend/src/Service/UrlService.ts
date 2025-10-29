@@ -10,7 +10,7 @@ export class UrlService {
 
   // CREATE
   async create(createUrlDto: CreateUrlDto, userId: string): Promise<Url> {
-    if (createUrlDto.customShortLink) {
+    if (createUrlDto.customShortLink && createUrlDto.customShortLink.trim() !== '') {
       const existingUrl = await this.urlModel.findOne({ shortenedUrl: createUrlDto.customShortLink }).exec();
       if (existingUrl) {
         throw new InternalServerErrorException(`Custom alias "${createUrlDto.customShortLink}" is already in use`);

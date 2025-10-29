@@ -84,6 +84,11 @@ export default function DashboardPage() {
         setError('Not authenticated. Please login.');
         return;
       }
+
+      if(newCustomShortenedLink && !/^[a-zA-Z0-9-_]+$/.test(newCustomShortenedLink)) {
+        setError('Custom url can only contain alphanumeric characters, hyphens, and underscores');
+        return;
+      }
       
       const res = await fetch("http://localhost:3000/", {
         method: 'POST',
@@ -208,10 +213,10 @@ export default function DashboardPage() {
               required
               disabled={isSubmitting}
             />
-            <h3>Enter your custom shortened url here (Optional)</h3>
+            <h3>Enter your custom shortened url (Optional)</h3>
             <input
               type="text"
-              placeholder="Enter shortened URL here..."
+              placeholder="Enter custom shortened URL (no spaces or special characters, only alphanumeric, hyphens, and underscores) here..."
               value={newCustomShortenedLink}
               onChange={(e) => setNewCustomShortenedLink(e.target.value)}
               onKeyDown={handleKeyPress}

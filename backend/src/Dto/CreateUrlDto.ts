@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsUrl, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsUrl, IsOptional, Matches } from 'class-validator';
 
 export class CreateUrlDto {
   @IsOptional()
@@ -7,6 +7,7 @@ export class CreateUrlDto {
 
   @IsOptional()
   @IsString({ message: 'Custom alias must be a string' })
+  @Matches(/^[a-zA-Z0-9-_]+$/, { message: 'Custom alias can only contain alphanumeric characters, hyphens, and underscores' })
   customShortLink?: string;
 
   @IsUrl({
