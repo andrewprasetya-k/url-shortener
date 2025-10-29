@@ -1,12 +1,14 @@
 'use client';
-import { redirect } from 'next/navigation';
+
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   
   const handleLogin = async (e: React.FormEvent) => {
@@ -25,7 +27,10 @@ export default function LoginPage() {
 
       if (res.ok) {
         setMessage('Register successful!');
-        redirect('/login');
+        // Redirect menggunakan router.push
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 500);
       } else {
         setMessage(`${data.message || 'Register account failed'}`);
       }
@@ -80,9 +85,9 @@ export default function LoginPage() {
           </label>
           <input
             type="email"
-            placeholder="Masukkan password"
+            placeholder="Masukkan email"
             value={email}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>
