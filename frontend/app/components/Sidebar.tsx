@@ -7,17 +7,22 @@ import { sidebar } from '../config';
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
   const logout = async () => {
-    await fetch('http://localhost:3000/auth/logout', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ refresh_token: localStorage.getItem('refresh_token') }),
-    });
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    window.location.href = '/login';
+    try {
+      await fetch('http://localhost:3000/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ refresh_token: localStorage.getItem('refresh_token') }),
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      document.cookie = 'access_token=; path=/; max-age=0';
+      window.location.href = '/login';
+    }
   }
   return (
     <>

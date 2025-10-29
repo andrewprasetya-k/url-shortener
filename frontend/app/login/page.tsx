@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -8,6 +8,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      router.push('/dashboard');
+    }
+  }, [router]);
   
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,8 +32,10 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (res.ok) {
-        // Simpan token ke localStorage
+        // Simpan token ke localStorage dan cookies
         localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('refresh_token', data.refresh_token);
+        document.cookie = `access_token=${data.access_token}; path=/; max-age=900`;
         
         setMessage('Login successful!');
         

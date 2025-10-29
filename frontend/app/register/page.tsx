@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
@@ -10,6 +10,13 @@ export default function LoginPage() {
   const [message, setMessage] = useState('');
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      router.push('/dashboard');
+    }
+  }, [router]);
   
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +36,7 @@ export default function LoginPage() {
         setMessage('Register successful!');
         // Redirect menggunakan router.push
         setTimeout(() => {
-          router.push('/dashboard');
+          router.push('/login');
         }, 500);
       } else {
         setMessage(`${data.message || 'Register account failed'}`);

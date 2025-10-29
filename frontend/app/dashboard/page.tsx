@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Copy, Trash2, ExternalLink, Link2, TrendingUp, ChartLine, Calendar, Check, MousePointerClick } from 'lucide-react';
 
 interface ShortLink {
@@ -13,6 +14,7 @@ interface ShortLink {
 }
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [links, setLinks] = useState<ShortLink[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -22,6 +24,15 @@ export default function DashboardPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'date' | 'clicks'>('date');
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      router.push('/login');
+      return;
+    }
+    fetchLinks();
+  }, [router]);
 
   const fetchLinks = async () => {
     try {
@@ -40,7 +51,16 @@ export default function DashboardPage() {
         }
       });
       
-      if (!res.ok) throw new Error("Failed to fetch links");
+      if (!res.ok) {
+        if (res.status === 401) {
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('refresh_token');
+          document.cookie = 'access_token=; path=/; max-age=0';
+          router.push('/login');
+          return;
+        }
+        throw new Error("Failed to fetch links");
+      }
       const data = await res.json();
       setLinks(data);
     } catch (err: any) {
@@ -129,10 +149,6 @@ export default function DashboardPage() {
       handleSubmit();
     }
   };
-
-  useEffect(() => {
-    fetchLinks();
-  }, []);
 
   const filteredLinks = links
     .filter(link => 
