@@ -5,6 +5,10 @@ export class CreateUrlDto {
   @IsString({ message: 'URL name must be a string' })
   urlName?: string;
 
+  @IsOptional()
+  @IsString({ message: 'Custom alias must be a string' })
+  customShortLink?: string;
+
   @IsUrl({
     require_protocol: true,
     require_valid_protocol: true,

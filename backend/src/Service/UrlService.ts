@@ -10,6 +10,23 @@ export class UrlService {
 
   // CREATE
   async create(createUrlDto: CreateUrlDto, userId: string): Promise<Url> {
+    if (createUrlDto.customShortLink) {
+      const existingUrl = await this.urlModel.findOne({ shortenedUrl: createUrlDto.customShortLink }).exec();
+      if (existingUrl) {
+        throw new InternalServerErrorException(`Custom alias "${createUrlDto.customShortLink}" is already in use`);
+      }
+      const newUrl = new this.urlModel({ 
+        ...createUrlDto, 
+        shortenedUrl: createUrlDto.customShortLink, 
+        timesClicked: 0,
+        userId 
+      });
+      try {
+        return await newUrl.save();
+      } catch (error) {
+        throw new InternalServerErrorException(`Error creating shortened URL: ${error.message}`);
+      }
+    }
     const shortenedUrl = Math.random().toString(36).substring(2, 8);
     const newUrl = new this.urlModel({ 
       ...createUrlDto, 

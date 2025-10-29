@@ -20,6 +20,7 @@ export default function DashboardPage() {
   const [error, setError] = useState('');
   const [newOriginalUrl, setNewOriginalUrl] = useState('');
   const [newUrlName, setNewUrlName] = useState('');
+  const [newCustomShortenedLink, setNewCustomShortenedLink] = useState('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -91,6 +92,7 @@ export default function DashboardPage() {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
+          customShortLink: newCustomShortenedLink,
           urlName: newUrlName,
           originalUrl: newOriginalUrl
         })
@@ -103,6 +105,7 @@ export default function DashboardPage() {
       
       setNewOriginalUrl("");
       setNewUrlName("");
+      setNewCustomShortenedLink("");
       await fetchLinks();
     } catch (error: any) {
       setError(error.message || "Failed to create short link");
@@ -185,25 +188,36 @@ export default function DashboardPage() {
           <div className="flex-1 relative">
             <h3>Place your link title (Optional)</h3>
             <input
-          type="text"
-          placeholder="Place your title here..."
-          value={newUrlName}
-          onChange={(e) => setNewUrlName(e.target.value)}
-          onKeyDown={handleKeyPress}
-          className="w-full px-4 py-3 my-4 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          required
-          disabled={isSubmitting}
+              type="text"
+              placeholder="Place your title here..."
+              value={newUrlName}
+              onChange={(e) => setNewUrlName(e.target.value)}
+              onKeyDown={handleKeyPress}
+              className="w-full px-4 py-3 my-4 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              required
+              disabled={isSubmitting}
             />
             <h3>Enter your url here</h3>
             <input
-          type="url"
-          placeholder="Enter your long URL here..."
-          value={newOriginalUrl}
-          onChange={(e) => setNewOriginalUrl(e.target.value)}
-          onKeyDown={handleKeyPress}
-          className="w-full px-4 py-3 my-4 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          required
-          disabled={isSubmitting}
+              type="url"
+              placeholder="Enter your long URL here..."
+              value={newOriginalUrl}
+              onChange={(e) => setNewOriginalUrl(e.target.value)}
+              onKeyDown={handleKeyPress}
+              className="w-full px-4 py-3 my-4 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              required
+              disabled={isSubmitting}
+            />
+            <h3>Enter your custom shortened url here (Optional)</h3>
+            <input
+              type="text"
+              placeholder="Enter shortened URL here..."
+              value={newCustomShortenedLink}
+              onChange={(e) => setNewCustomShortenedLink(e.target.value)}
+              onKeyDown={handleKeyPress}
+              className="w-full px-4 py-3 my-4 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              required
+              disabled={isSubmitting}
             />
           </div>
         </div>
