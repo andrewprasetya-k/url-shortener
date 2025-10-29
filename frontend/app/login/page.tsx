@@ -37,7 +37,7 @@ export default function LoginPage() {
         localStorage.setItem('refresh_token', data.refresh_token);
         document.cookie = `access_token=${data.access_token}; path=/; max-age=900`;
         
-        setMessage('Login successful!');
+        setMessage('Login successful, logging you in...');
         
         // Redirect menggunakan router.push
         setTimeout(() => {
@@ -98,7 +98,7 @@ export default function LoginPage() {
           {loading ? 'Loading...' : 'Login'}
         </button>
 
-        <a href="/register">belum punya akun</a>
+        <a href="/register" className='text-blue-400 mx-auto'>register</a>
 
         {message && (
           <p

@@ -109,7 +109,7 @@ export default function LoginPage() {
         {message && (
           <p
             className={`text-center text-sm font-medium ${
-              message.includes('✅') ? 'text-green-600' : 'text-red-600'
+              message.includes('successful') ? 'text-green-600' : 'text-red-600'
             }`}
           >
             {message}
