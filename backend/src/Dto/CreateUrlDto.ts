@@ -6,8 +6,8 @@ export class CreateUrlDto {
   urlName?: string;
 
   @IsOptional()
+  @Matches(/^[a-zA-Z0-9-_]*$/, { message: 'Custom alias can only contain alphanumeric characters, hyphens, and underscores' })
   @IsString({ message: 'Custom alias must be a string' })
-  @Matches(/^[a-zA-Z0-9-_]+$/, { message: 'Custom alias can only contain alphanumeric characters, hyphens, and underscores' })
   customShortLink?: string;
 
   @IsUrl({
