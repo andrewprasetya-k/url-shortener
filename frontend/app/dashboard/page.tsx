@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Copy, Trash2, ExternalLink, Link2, TrendingUp, ChartLine, Calendar, Check, MousePointerClick } from 'lucide-react';
+import { Copy, Trash2, ExternalLink, 
+  Link2, TrendingUp, ChartLine, 
+  Calendar, Check, MousePointerClick, 
+  ArrowRight, ArrowLeft } from 'lucide-react';
 import React from 'react';
 import ConfirmModal from '../components/ConfirmModal';
 import { link } from 'fs';
@@ -30,6 +33,9 @@ export default function DashboardPage() {
   const [sortBy, setSortBy] = useState<'date' | 'clicks'>('date');
   const [deleteModal, setDeleteModal] = useState(false);
   const [linkToDelete, setLinkToDelete] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [itemsPerPage] = useState(5); // 5 items per page
+  const [totalItems, setTotalItems] = useState(0); // Total dari backend
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -38,7 +44,7 @@ export default function DashboardPage() {
       return;
     }
     fetchLinks();
-  }, [router]);
+  }, [router, page]);
 
   const fetchLinks = async () => {
     try {
@@ -51,7 +57,7 @@ export default function DashboardPage() {
         return;
       }
       
-      const res = await fetch("http://localhost:3000/my-urls", {
+      const res = await fetch(`http://localhost:3000/my-urls?page=${page}&limit=5`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -68,7 +74,8 @@ export default function DashboardPage() {
         throw new Error("Failed to fetch links");
       }
       const data = await res.json();
-      setLinks(data);
+      setLinks(data.data);
+      setTotalItems(data.total); // Set total dari backend
     } catch (err: any) {
       setError(err.message || "An error occurred while fetching links");
     } finally {
@@ -144,7 +151,8 @@ export default function DashboardPage() {
       if (!res.ok) {
         throw new Error("Failed to delete link");
       }
-      
+      setDeleteModal(false);
+      setLinkToDelete(null);
       await fetchLinks();
     } catch (error: any) {
       setError(error.message || "Failed to delete link");
@@ -162,6 +170,9 @@ export default function DashboardPage() {
       handleSubmit();
     }
   };
+
+  // Calculate total pages
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const filteredLinks = links
     .filter(link => 
@@ -367,7 +378,7 @@ export default function DashboardPage() {
             </button>
           )}
           <button
-            onClick={() => setDeleteModal(true)}
+            onClick={() => {setDeleteModal(true); setLinkToDelete(link.shortenedUrl)}}
             className="cursor-pointer flex items-center gap-2 p-2 text-red-600 hover:text-red-600 hover:bg-red-50 transition-colors rounded"
             title="Delete link"
             aria-label="Delete shortened URL"
@@ -377,7 +388,35 @@ export default function DashboardPage() {
           </button>
         </div>
       </div>
-        ))}
+      ))}
+      <div className="flex gap-4 justify-center items-center mt-6 mb-6">
+        <button 
+          onClick={() => {
+            setPage(prev => prev - 1);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          disabled={page === 1}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          <ArrowLeft size={16} />
+        </button>
+        
+        <span className="text-gray-700">
+          Page {page} of {totalPages}
+        </span>
+        
+        <button 
+          onClick={() => {
+            setPage(prev => prev + 1);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          disabled={page >= totalPages}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          <ArrowRight size={16} />
+        </button>
+      </div>
+      
       </div>
       <ConfirmModal
         isOpen={deleteModal}
