@@ -39,7 +39,7 @@ export class AuthService {
     const payload = { username: user.username, sub: user._id };
     
     // Generate access token (15 menit)
-    const access_token = this.jwtService.sign(payload, { expiresIn: '15m' });
+    const access_token = this.jwtService.sign(payload, { expiresIn: '30m' });
     
     // Generate refresh token (7 hari)
     const refresh_token = crypto.randomBytes(64).toString('hex');

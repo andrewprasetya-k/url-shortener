@@ -46,6 +46,33 @@ export default function DashboardPage() {
     fetchLinks();
   }, [router, page]);
 
+  // Helper function untuk refresh access token
+  const refreshAccessToken = async (): Promise<boolean> => {
+    try {
+      const refreshToken = localStorage.getItem('refresh_token');
+      if (!refreshToken) return false;
+
+      const res = await fetch('http://localhost:3000/auth/refresh', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refresh_token: refreshToken })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        localStorage.setItem('access_token', data.access_token);
+        if (data.refresh_token) {
+          localStorage.setItem('refresh_token', data.refresh_token);
+        }
+        return true; // Berhasil refresh
+      }
+      return false;
+    } catch (error) {
+      console.error('Refresh token error:', error);
+      return false;
+    }
+  };
+
   const fetchLinks = async () => {
     try {
       setError('');
@@ -65,11 +92,20 @@ export default function DashboardPage() {
       
       if (!res.ok) {
         if (res.status === 401) {
-          localStorage.removeItem('access_token');
-          localStorage.removeItem('refresh_token');
-          document.cookie = 'access_token=; path=/; max-age=0';
-          router.push('/login');
-          return;
+          // Coba refresh token dulu
+          const refreshed = await refreshAccessToken();
+          
+          if (refreshed) {
+            // Token berhasil di-refresh, retry request
+            return fetchLinks();
+          } else {
+            // Refresh token gagal atau expired, logout
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            document.cookie = 'access_token=; path=/; max-age=0';
+            router.push('/login');
+            return;
+          }
         }
         throw new Error("Failed to fetch links");
       }
@@ -116,6 +152,18 @@ export default function DashboardPage() {
       });
       
       if (!res.ok) {
+        if (res.status === 401) {
+          // Coba refresh token
+          const refreshed = await refreshAccessToken();
+          if (refreshed) {
+            // Retry submit
+            return handleSubmit();
+          } else {
+            localStorage.clear();
+            router.push('/login');
+            return;
+          }
+        }
         const errorText = await res.text();
         throw new Error(errorText || "Failed to create short link");
       }
@@ -149,6 +197,18 @@ export default function DashboardPage() {
       });
       
       if (!res.ok) {
+        if (res.status === 401) {
+          // Coba refresh token
+          const refreshed = await refreshAccessToken();
+          if (refreshed) {
+            // Retry delete
+            return handleDelete(id);
+          } else {
+            localStorage.clear();
+            router.push('/login');
+            return;
+          }
+        }
         throw new Error("Failed to delete link");
       }
       setDeleteModal(false);
