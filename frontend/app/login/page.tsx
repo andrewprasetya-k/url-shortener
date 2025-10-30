@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import {toast} from 'sonner';
+import LoadingScreen from '../components/LoadingScreen';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -38,8 +38,6 @@ export default function LoginPage() {
         localStorage.setItem('refresh_token', data.refresh_token);
         document.cookie = `access_token=${data.access_token}; path=/; max-age=900`;
         
-        setMessage('Login successful, logging you in...');
-        
         // Redirect menggunakan router.push
         setTimeout(() => {
           router.push('/dashboard');
@@ -54,6 +52,11 @@ export default function LoginPage() {
       setLoading(false);
     }
   };
+
+  // Show loading screen saat login process
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-linear-to-br from-blue-100 via-white to-blue-200">

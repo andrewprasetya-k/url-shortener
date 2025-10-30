@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import LoadingScreen from '../components/LoadingScreen';
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -20,6 +21,7 @@ export default function LoginPage() {
   
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const res = await fetch('http://localhost:3000/auth/register', {
@@ -39,16 +41,22 @@ export default function LoginPage() {
           router.push('/login');
         }, 500);
       } else {
+
         setMessage(`${data.message || 'Register account failed'}`);
       }
     } catch (error:any) {
-      setMessage(error.message || "An error occurred");
 
+      setMessage(error.message || "An error occurred");
     }
     finally {
       setLoading(false);
     }
   };
+
+  // Show loading screen saat register process
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-linear-to-br from-blue-100 via-white to-blue-200">
