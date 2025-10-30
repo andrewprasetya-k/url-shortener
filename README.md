@@ -9,6 +9,7 @@ A modern full-stack URL shortener application with custom short links, user auth
 ## ✨ Features
 
 ### Core Features
+
 - 🔐 **JWT Authentication** - Secure authentication with automatic token refresh
 - ✂️ **Custom Short URLs** - Create memorable personalized short links
 - 📊 **Click Analytics** - Real-time click tracking and statistics
@@ -17,6 +18,7 @@ A modern full-stack URL shortener application with custom short links, user auth
 - 🗑️ **Safe Deletion** - Confirmation modals prevent accidental deletion
 
 ### UX Enhancements
+
 - 🎨 **Smooth Animations** - Fade-in, slide-in, and bounce animations
 - 📱 **Fully Responsive** - Perfect on mobile, tablet, and desktop
 - 🌟 **Modern UI Components** - Built with CVA and Tailwind variants
@@ -25,6 +27,7 @@ A modern full-stack URL shortener application with custom short links, user auth
 - 🎯 **Server-Side Pagination** - Efficient data loading (5 items per page)
 
 ### Technical Features
+
 - 🔄 **Auto Token Refresh** - Seamless authentication without re-login
 - 🛡️ **Input Validation** - Comprehensive frontend and backend validation
 - 🎭 **Accessibility** - Focus rings, ARIA labels, keyboard navigation
@@ -33,6 +36,7 @@ A modern full-stack URL shortener application with custom short links, user auth
 ## 🛠️ Tech Stack
 
 ### Backend
+
 - **NestJS** - Progressive Node.js framework
 - **MongoDB** - NoSQL database with Mongoose ODM
 - **JWT** - Secure authentication with access & refresh tokens
@@ -41,6 +45,7 @@ A modern full-stack URL shortener application with custom short links, user auth
 - **Passport** - Authentication middleware
 
 ### Frontend
+
 - **Next.js 16** - React framework with App Router & Turbopack
 - **TypeScript** - Type-safe development
 - **TailwindCSS v4** - Modern utility-first CSS
@@ -91,12 +96,14 @@ url-shortener/
 ### Installation
 
 #### 1. Clone the repository
+
 ```bash
 git clone https://github.com/yourusername/url-shortener.git
 cd url-shortener
 ```
 
 #### 2. Setup Backend
+
 ```bash
 cd backend
 npm install
@@ -112,6 +119,7 @@ npm run start:dev
 Backend will run on `http://localhost:3000`
 
 #### 3. Setup Frontend
+
 ```bash
 cd frontend
 npm install
@@ -129,6 +137,7 @@ Frontend will run on `http://localhost:3001`
 ### Environment Variables
 
 #### Backend `.env`
+
 ```env
 # Database
 MONGO_URI=mongodb://localhost:27017/url-shortener
@@ -145,6 +154,7 @@ JWT_REFRESH_SECRET=your-super-secret-refresh-key
 ```
 
 #### Frontend `.env.local`
+
 ```env
 # API URL
 NEXT_PUBLIC_API_URL=http://localhost:3000
@@ -156,6 +166,7 @@ NODE_ENV=development
 ## 📖 API Endpoints
 
 ### Authentication
+
 - `POST /auth/register` - Register new user
 - `POST /auth/login` - Login user
 - `POST /auth/refresh` - Refresh access token
@@ -163,6 +174,7 @@ NODE_ENV=development
 - `GET /auth/me` - Get current user info
 
 ### URL Management
+
 - `POST /` - Create shortened URL
 - `GET /my-urls?page=1&limit=5` - Get user's URLs (paginated)
 - `GET /:shortUrl` - Redirect to original URL
@@ -184,6 +196,7 @@ NODE_ENV=development
 ## 🎨 UI Components
 
 ### Button Variants
+
 - **Default** - Primary actions (blue)
 - **Destructive** - Delete actions (red)
 - **Outline** - Secondary actions
@@ -191,6 +204,7 @@ NODE_ENV=development
 - **Success** - Success states (green)
 
 ### Animations
+
 - **Fade-in** - Smooth entrance for cards
 - **Slide-in** - Bottom-up for errors/notifications
 - **Bounce-in** - Success confirmations
@@ -210,6 +224,7 @@ NODE_ENV=development
 ## 🚢 Deployment
 
 ### Frontend (Vercel - Recommended)
+
 ```bash
 cd frontend
 vercel
@@ -219,6 +234,7 @@ vercel
 ```
 
 ### Backend (Railway/Render - Recommended)
+
 1. Push code to GitHub
 2. Connect repository to Railway/Render
 3. Set environment variables:
@@ -240,16 +256,16 @@ cd frontend
 npm run test
 ```
 
-## 📸 Screenshots
+<!-- ## 📸 Screenshots
 
 > **Note:** Add your screenshots here after deployment
-> 
+>
 > Recommended screenshots:
 > - Dashboard with multiple links
 > - Create form with validation
 > - Toast notifications
 > - Mobile responsive view
-> - Loading states
+> - Loading states -->
 
 ## 🤝 Contributing
 
@@ -268,9 +284,9 @@ This project is open source and available under the [MIT License](LICENSE).
 ## 👨‍💻 Author
 
 **Andrew Prasetya**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
-- Portfolio: [your-portfolio.com](https://your-portfolio.com)
+
+- GitHub: [@andrewprasetya-k](https://github.com/andrewprasetya-k)
+- LinkedIn: [Andrew Prasetya Kusuma](https://linkedin.com/in/andrewprasetya-k)
 
 ## 🙏 Acknowledgments
 
@@ -295,6 +311,4 @@ Give a ⭐️ if this project helped you!
 
 ---
 
-**Made with ❤️ and ☕ by Andrew Prasetya**
-
-*This project is part of my portfolio demonstrating full-stack development skills with modern technologies.*
+**Andrew Prasetya**
