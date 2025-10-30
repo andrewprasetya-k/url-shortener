@@ -74,7 +74,6 @@ export default function DashboardPage() {
 
   const fetchLinks = async () => {
     try {
-      toast.error('');
       const token = localStorage.getItem('access_token');
       
       if (!token) {
@@ -122,7 +121,6 @@ export default function DashboardPage() {
     if (!newOriginalUrl) return;
     
     setIsSubmitting(true);
-    toast.error('');
     
     try {
       const token = localStorage.getItem('access_token');
@@ -166,13 +164,13 @@ export default function DashboardPage() {
         const errorText = await res.text();
         throw new Error(errorText || "Failed to create short link");
       }
-      
+      toast.success('Short link created successfully!');
       setNewOriginalUrl("");
       setNewUrlName("");
       setNewCustomShortenedLink("");
       await fetchLinks();
     } catch (error: any) {
-      toast.error(error.message || "Failed to create short link");
+      toast.error(error.message[0] || "Failed to create short link");
     } finally {
       setIsSubmitting(false);
     }
@@ -180,7 +178,6 @@ export default function DashboardPage() {
 
   const handleDelete = async (id: string) => {
     try {
-      toast.error('');
       const token = localStorage.getItem('access_token');
       
       if (!token) {
@@ -210,6 +207,7 @@ export default function DashboardPage() {
         }
         throw new Error("Failed to delete link");
       }
+      toast.success('Link deleted successfully!');
       setDeleteModal(false);
       setLinkToDelete(null);
       await fetchLinks();
