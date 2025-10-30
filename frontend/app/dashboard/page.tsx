@@ -23,7 +23,6 @@ export default function DashboardPage() {
   const router = useRouter();
   const [links, setLinks] = useState<ShortLink[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [newOriginalUrl, setNewOriginalUrl] = useState('');
   const [newUrlName, setNewUrlName] = useState('');
   const [newCustomShortenedLink, setNewCustomShortenedLink] = useState('');
@@ -44,7 +43,7 @@ export default function DashboardPage() {
       return;
     }
     fetchLinks();
-  }, [router, page]);
+  }, [router, page, itemsPerPage, totalItems]);
 
   // Helper function untuk refresh access token
   const refreshAccessToken = async (): Promise<boolean> => {
@@ -75,11 +74,11 @@ export default function DashboardPage() {
 
   const fetchLinks = async () => {
     try {
-      setError('');
+      toast.error('');
       const token = localStorage.getItem('access_token');
       
       if (!token) {
-        setError('Not authenticated. Please login.');
+        toast.error('Not authenticated. Please login.');
         setLoading(false);
         return;
       }
@@ -113,7 +112,7 @@ export default function DashboardPage() {
       setLinks(data.data);
       setTotalItems(data.total); // Set total dari backend
     } catch (err: any) {
-      setError(err.message || "An error occurred while fetching links");
+      toast.error(err.message || "An error occurred while fetching links");
     } finally {
       setLoading(false);
     }
@@ -123,18 +122,18 @@ export default function DashboardPage() {
     if (!newOriginalUrl) return;
     
     setIsSubmitting(true);
-    setError('');
+    toast.error('');
     
     try {
       const token = localStorage.getItem('access_token');
       
       if (!token) {
-        setError('Not authenticated. Please login.');
+        toast.error('Not authenticated. Please login.');
         return;
       }
 
       if(newCustomShortenedLink && !/^[a-zA-Z0-9-_]+$/.test(newCustomShortenedLink)) {
-        setError('Custom url can only contain alphanumeric characters, hyphens, and underscores');
+        toast.error('Custom url can only contain alphanumeric characters, hyphens, and underscores');
         return;
       }
       
@@ -173,7 +172,7 @@ export default function DashboardPage() {
       setNewCustomShortenedLink("");
       await fetchLinks();
     } catch (error: any) {
-      setError(error.message || "Failed to create short link");
+      toast.error(error.message || "Failed to create short link");
     } finally {
       setIsSubmitting(false);
     }
@@ -181,11 +180,11 @@ export default function DashboardPage() {
 
   const handleDelete = async (id: string) => {
     try {
-      setError('');
+      toast.error('');
       const token = localStorage.getItem('access_token');
       
       if (!token) {
-        setError('Not authenticated. Please login.');
+        toast.error('Not authenticated. Please login.');
         return;
       }
       
@@ -215,7 +214,7 @@ export default function DashboardPage() {
       setLinkToDelete(null);
       await fetchLinks();
     } catch (error: any) {
-      setError(error.message || "Failed to delete link");
+      toast.error(error.message || "Failed to delete link");
     }
   };
 
@@ -311,12 +310,6 @@ export default function DashboardPage() {
                   Only alphanumeric characters, hyphens, and underscores allowed
                 </p>
               </div>
-
-              {error && (
-                <div className="bg-red-50 border border-red-200 rounded-md text-red-700 px-4 py-3 animate-slide-in-bottom">
-                  {error}
-                </div>
-              )}
 
               <Button
                 onClick={handleSubmit}
