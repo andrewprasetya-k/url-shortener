@@ -103,22 +103,22 @@ url-shortener/
 #### Backend `.env`
 ```env
 # Database
-MONGODB_URI=mongodb://localhost:27017/url-shortener
-
-# JWT
-JWT_SECRET=your-secret-key-here
-JWT_REFRESH_SECRET=your-refresh-secret-here
-JWT_EXPIRATION=15m
-JWT_REFRESH_EXPIRATION=7d
+MONGO_URI=mongodb://localhost:27017/url-shortener
+# Or use MongoDB Atlas (recommended):
+# MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/?appName=YourApp
 
 # Server
-PORT=3000
+port=3000
+
+# JWT (optional - uses defaults if not set)
+JWT_SECRET=your-super-secret-jwt-key
+
+# Environment
+NODE_ENV=development
 ```
 
-#### Frontend `.env.local` (Optional)
-```env
-NEXT_PUBLIC_API_URL=http://localhost:3000
-```
+#### Frontend
+No environment variables required for development. API URL is currently hardcoded to `http://localhost:3000`.
 
 ## 📖 API Endpoints
 
@@ -207,7 +207,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 **Andrew Prasetya**
 - GitHub: [@andrewprasetya](https://github.com/andrewprasetya)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
+- LinkedIn: [Andrew Prasetya](https://linkedin.com/in/andrewprasetya-k)
 
 ## 🙏 Acknowledgments
 
@@ -216,7 +216,4 @@ This project is open source and available under the [MIT License](LICENSE).
 - All open-source contributors
 
 ---
-
-⭐ **If you like this project, please give it a star!** ⭐
-
-Made with ❤️ by Andrew Prasetya
+-Andrew
