@@ -12,14 +12,15 @@ async function bootstrap() {
     transform: true,
   }));
 
-  // ✅ Enable CORS
+  // ✅ Enable CORS with environment variable
   app.enableCors({
-    origin: 'http://localhost:3001',
+    origin: process.env.CORS_ORIGIN || 'http://localhost:3001',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
 
-  await app.listen(3000);
-  console.log(`🚀 Server running at http://localhost:3000`);
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+  console.log(`🚀 Server running at http://localhost:${port}`);
 }
 bootstrap();

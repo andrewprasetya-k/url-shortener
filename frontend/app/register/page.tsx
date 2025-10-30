@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
 import LoadingScreen from '../components/LoadingScreen';
 import { getApiUrl } from '../../lib/api-config';
 
