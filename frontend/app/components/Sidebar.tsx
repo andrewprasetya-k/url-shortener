@@ -38,15 +38,15 @@ export default function Sidebar() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full text-gray-700 ${sidebar.width} p-4 py-6 transform transition-transform duration-300 z-40 flex flex-col justify-between
+        className={`fixed top-0 left-0 h-full ${sidebar.width} p-4 py-6 transform transition-transform duration-300 z-40 flex flex-col justify-between
         ${open ? 'translate-x-0' : '-translate-x-full sm:translate-x-0'}`}      >
         <div>
-          <h2 className="text-2xl font-bold pl-2 mb-6">Url Shortener</h2>
+          <h2 className="text-2xl font-bold pl-2 mb-6 text-gray-700" >Url Shortener</h2>
 
           <nav className="space-y-3">
             <Link
               href="/dashboard"
-              className="flex items-center gap-2 p-2 rounded bg-gray-200 transition"
+              className="flex text-white items-center gap-2 p-2 rounded bg-blue-600 transition hover:bg-blue-700"
             >
               <LayoutDashboard size={18} /> Dashboard
             </Link>
