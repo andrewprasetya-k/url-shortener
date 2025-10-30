@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
+import { getApiUrl } from "../../lib/api-config";
 
 export default function Topbar({title}:{title:string}) {
   const [usernameShow, setUsernameShow] = useState<string>('');
@@ -12,7 +13,7 @@ export default function Topbar({title}:{title:string}) {
         setUsernameShow('');
         return;
       }
-      const response = await fetch('http://localhost:3000/auth/me', {
+      const response = await fetch(getApiUrl('auth/me'), {
         headers: {
           'Authorization': `Bearer ${token}`,
         }

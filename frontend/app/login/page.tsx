@@ -1,7 +1,9 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 import LoadingScreen from '../components/LoadingScreen';
+import { getApiUrl } from '../../lib/api-config';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -22,7 +24,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch('http://localhost:3000/auth/login', {
+      const res = await fetch(getApiUrl('auth/login'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

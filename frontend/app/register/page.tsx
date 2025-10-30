@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import LoadingScreen from '../components/LoadingScreen';
+import { getApiUrl } from '../../lib/api-config';
 
 export default function RegisterPage() {
   const [username, setUsername] = useState('');
@@ -24,7 +26,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const res = await fetch('http://localhost:3000/auth/register', {
+      const res = await fetch(getApiUrl('auth/register'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -4,13 +4,14 @@ import { Menu, X, Home, LayoutDashboard, LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { sidebar } from '../config';
 import ConfirmModal from './ConfirmModal';
+import { getApiUrl } from '../../lib/api-config';
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const logout = async () => {
     try {
-      await fetch('http://localhost:3000/auth/logout', {
+      await fetch(getApiUrl('auth/logout'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
