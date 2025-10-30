@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Copy, Trash2, ExternalLink, Link2, TrendingUp, ChartLine, Calendar, Check, MousePointerClick } from 'lucide-react';
 import React from 'react';
 import ConfirmModal from '../components/ConfirmModal';
+import { link } from 'fs';
 
 interface ShortLink {
   _id: string;
@@ -27,6 +28,8 @@ export default function DashboardPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'date' | 'clicks'>('date');
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [linkToDelete, setLinkToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -364,7 +367,7 @@ export default function DashboardPage() {
             </button>
           )}
           <button
-            onClick={() => handleDelete(link.shortenedUrl)}
+            onClick={() => setDeleteModal(true)}
             className="flex items-center gap-2 p-2 text-red-600 hover:text-red-600 hover:bg-red-50 transition-colors rounded"
             title="Delete link"
             aria-label="Delete shortened URL"
@@ -376,6 +379,19 @@ export default function DashboardPage() {
       </div>
         ))}
       </div>
+      <ConfirmModal
+        isOpen={deleteModal}
+        title="Konfirmasi Hapus"
+        message="Apakah Anda yakin ingin menghapus link ini?"
+        confirmText="Ya, Hapus"
+        cancelText="Batal"
+        onConfirm={() => {
+          if (linkToDelete) {
+            handleDelete(linkToDelete);
+          }
+        }}
+        onCancel={() => setDeleteModal(false)}
+      />
     </div>
   );
 }
