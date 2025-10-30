@@ -312,4 +312,5 @@ Give a ⭐️ if this project helped you!
 ---
 
 **Andrew Prasetya**
-_todo: convert link into qr code_
+
+-_todo: convert link into qr code_
