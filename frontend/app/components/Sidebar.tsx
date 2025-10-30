@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { Menu, X, Home, LayoutDashboard, LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { sidebar } from '../config';
+import ConfirmModal from './ConfirmModal';
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const logout = async () => {
     try {
       await fetch('http://localhost:3000/auth/logout', {
@@ -55,7 +57,7 @@ export default function Sidebar() {
         <div>
           <button
             type="button"
-            onClick={logout}
+            onClick={() => setShowLogoutModal(true)}
             aria-label="Logout"
             className="w-full text-left text-white bg-red-600 flex items-center gap-2 p-2 rounded hover:bg-red-700 transition cursor-pointer"
           >
@@ -63,6 +65,16 @@ export default function Sidebar() {
           </button>
         </div>
       </aside>
+
+      <ConfirmModal
+        isOpen={showLogoutModal}
+        title="Konfirmasi Logout"
+        message="Apakah Anda yakin ingin keluar?"
+        confirmText="Ya, Logout"
+        cancelText="Batal"
+        onConfirm={logout}
+        onCancel={() => setShowLogoutModal(false)}
+      />
     </>
   );
 }

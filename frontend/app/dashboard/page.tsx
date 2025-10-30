@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Copy, Trash2, ExternalLink, Link2, TrendingUp, ChartLine, Calendar, Check, MousePointerClick } from 'lucide-react';
+import React from 'react';
+import ConfirmModal from '../components/ConfirmModal';
 
 interface ShortLink {
   _id: string;
