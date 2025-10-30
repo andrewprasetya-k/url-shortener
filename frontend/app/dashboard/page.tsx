@@ -253,7 +253,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen animate-fade-in">
       <div className="max-w-6xl mx-auto mt-10">
         <Card className="mb-8 animate-fade-in">
           <CardHeader>
