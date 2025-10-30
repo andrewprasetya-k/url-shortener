@@ -2,13 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Copy, Trash2, ExternalLink, 
-  Link2, TrendingUp, ChartLine, 
-  Calendar, Check, MousePointerClick, 
-  ArrowRight, ArrowLeft } from 'lucide-react';
+import { Copy, Trash2, Link2, TrendingUp, ChartLine, Calendar, Check, MousePointerClick, ArrowRight, ArrowLeft } from 'lucide-react';
 import React from 'react';
 import ConfirmModal from '../components/ConfirmModal';
-import { link } from 'fs';
+import { Button } from '../components/Button';
+import { Card, CardHeader, CardContent } from '../components/Card';
 import LoadingScreen from '../components/LoadingScreen';
 
 interface ShortLink {
@@ -258,116 +256,138 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen">
       <div className="max-w-6xl mx-auto mt-10">
-        <div className="bg-white p-6 mb-8 border border-gray-200 rounded-md">
-          <h2 className="text-xl font-semibold text-gray-800 mb-8">Create New Short Link</h2>
-          <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row gap-3">
-          <div className="flex-1 relative">
-            <h3>Place your link title (Optional)</h3>
-            <input
-              type="text"
-              placeholder="Place your title here..."
-              value={newUrlName}
-              onChange={(e) => setNewUrlName(e.target.value)}
-              onKeyDown={handleKeyPress}
-              className="w-full px-4 py-3 my-4 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              disabled={isSubmitting}
-            />
-            <h3>Enter your url here</h3>
-            <input
-              type="url"
-              placeholder="Enter your long URL here..."
-              value={newOriginalUrl}
-              onChange={(e) => setNewOriginalUrl(e.target.value)}
-              onKeyDown={handleKeyPress}
-              className="w-full px-4 py-3 my-4 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
-              disabled={isSubmitting}
-            />
-            <h3>Enter your custom shortened url (Optional)</h3>
-            <input
-              type="text"
-              placeholder="Enter custom shortened URL (no spaces or special characters, only alphanumeric, hyphens, and underscores) here..."
-              value={newCustomShortenedLink}
-              onChange={(e) => setNewCustomShortenedLink(e.target.value)}
-              onKeyDown={handleKeyPress}
-              className="w-full px-4 py-3 my-4 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              disabled={isSubmitting}
-            />
-          </div>
-        </div>
-        {error && (
-          <div className="bg-red-50 border border-red-200 rounded-md text-red-700 px-4 py-3">
-            {error}
-          </div>
-        )}
-          <button
-            onClick={handleSubmit}
-            disabled={isSubmitting || !newOriginalUrl}
-            className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-          >
-            {isSubmitting ? (
-          <>
-            <div className="animate-spin h-5 w-5 border-b-2 border-white"></div>
-            Creating...
-          </>
-            ) : (
-          <>
-            <Link2 className="w-5 h-5" />
-            Shorten URL
-          </>
-            )}
-          </button>
-          </div>
-        </div>
+        <Card className="mb-8 animate-fade-in">
+          <CardHeader>
+            <h2 className="text-xl font-semibold text-gray-800">Create New Short Link</h2>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Link Title (Optional)
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter a memorable title..."
+                  value={newUrlName}
+                  onChange={(e) => setNewUrlName(e.target.value)}
+                  onKeyDown={handleKeyPress}
+                  className="w-full px-4 py-3 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  disabled={isSubmitting}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Original URL <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="url"
+                  placeholder="https://example.com/your-long-url"
+                  value={newOriginalUrl}
+                  onChange={(e) => setNewOriginalUrl(e.target.value)}
+                  onKeyDown={handleKeyPress}
+                  className="w-full px-4 py-3 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  required
+                  disabled={isSubmitting}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Custom Short Link (Optional)
+                </label>
+                <input
+                  type="text"
+                  placeholder="my-custom-link"
+                  value={newCustomShortenedLink}
+                  onChange={(e) => setNewCustomShortenedLink(e.target.value)}
+                  onKeyDown={handleKeyPress}
+                  className="w-full px-4 py-3 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  disabled={isSubmitting}
+                />
+                <p className="mt-1 text-xs text-gray-500">
+                  Only alphanumeric characters, hyphens, and underscores allowed
+                </p>
+              </div>
+
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-md text-red-700 px-4 py-3 animate-slide-in-bottom">
+                  {error}
+                </div>
+              )}
+
+              <Button
+                onClick={handleSubmit}
+                disabled={!newOriginalUrl}
+                isLoading={isSubmitting}
+                size="lg"
+                className="w-full sm:w-auto"
+              >
+                <Link2 className="w-5 h-5" />
+                Shorten URL
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
         {links.length > 0 && (
-          <div className="bg-white p-6 mb-4 border border-gray-200 rounded-md">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <input
-            type="text"
-            placeholder="Search links..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="flex-1 px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as 'date' | 'clicks')}
-            className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            <option value="date">Sort by Date</option>
-            <option value="clicks">Sort by Clicks</option>
-          </select>
-        </div>
-          </div>
+          <Card className="mb-4">
+            <CardContent className="py-4">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <input
+                  type="text"
+                  placeholder="Search links..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="flex-1 px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                />
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as 'date' | 'clicks')}
+                  className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                >
+                  <option value="date">Sort by Date</option>
+                  <option value="clicks">Sort by Clicks</option>
+                </select>
+              </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* Empty state when there are no links at all */}
         {links.length === 0 && (
-          <div className="bg-white border border-gray-200 rounded-md p-6 text-center">
-        <div className="flex flex-col items-center gap-4">
-          <MousePointerClick className="w-12 h-12 text-blue-500" />
-          <h3 className="text-xl font-semibold text-gray-900">No short links yet</h3>
-          <p className="text-gray-600">Create your first short link using the form above.</p>
-        </div>
-          </div>
+          <Card className="text-center animate-fade-in">
+            <CardContent className="py-12">
+              <div className="flex flex-col items-center gap-4">
+                <MousePointerClick className="w-16 h-16 text-blue-500" />
+                <h3 className="text-xl font-semibold text-gray-900">No short links yet</h3>
+                <p className="text-gray-600">Create your first short link using the form above.</p>
+              </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* If there are links but the current filter yields no results */}
         {links.length > 0 && filteredLinks.length === 0 && (
-          <div className="bg-white border border-gray-200 rounded-md p-6 text-center">
-        <div className="flex flex-col items-center gap-3">
-          <TrendingUp className="w-10 h-10 text-gray-400" />
-          <h4 className="text-lg font-medium text-gray-800">No matching links</h4>
-          <p className="text-sm text-gray-500">Try a different search or clear filters to see all links.</p>
-        </div>
-          </div>
+          <Card className="text-center animate-fade-in">
+            <CardContent className="py-12">
+              <div className="flex flex-col items-center gap-3">
+                <TrendingUp className="w-12 h-12 text-gray-400" />
+                <h4 className="text-lg font-medium text-gray-800">No matching links</h4>
+                <p className="text-sm text-gray-500">Try a different search or clear filters to see all links.</p>
+              </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* List of filtered links */}
-        {filteredLinks.length > 0 && filteredLinks.map(link => (
-          <div key={link._id} className="bg-white border border-gray-200 p-4 mb-4 flex flex-col sm:justify-between rounded-md">
+        {filteredLinks.length > 0 && filteredLinks.map((link, index) => (
+          <Card 
+            key={link._id} 
+            className="mb-4 p-4" 
+            style={{ animationDelay: `${index * 0.05}s` }}
+          >
         {link.urlName ? (
           <div className="flex-1 p-2 sm:mb-0">
             <span className="truncate font-semibold text-2xl sm:text-3xl text-gray-900">
@@ -413,65 +433,76 @@ export default function DashboardPage() {
         </div>
         <div className="flex items-center gap-2 mt-4 sm:mb-0">
           {copiedId === link._id ? (
-            <button
+            <Button
+              variant="success"
+              size="sm"
               disabled
-              className="flex items-center gap-2 p-2 text-green-600 bg-green-50 rounded"
-              title="Copied"
-              aria-label="Link copied"
+              className="animate-bounce-in"
             >
-              <Check className="w-5 h-5" />
-              <span className="text-sm font-medium text-green-600">Copied!</span>
-            </button>
+              <Check className="w-4 h-4" />
+              Copied!
+            </Button>
           ) : (
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => copyToClipboard(link._id, link.shortenedUrl)}
-              className="flex cursor-pointer items-center gap-2 p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors rounded"
               title="Copy to clipboard"
-              aria-label="Copy shortened URL to clipboard"
             >
-              <Copy className="w-5 h-5" />
-              <span className="text-sm">Copy</span>
-            </button>
+              <Copy className="w-4 h-4" />
+              Copy
+            </Button>
           )}
-          <button
-            onClick={() => {setDeleteModal(true); setLinkToDelete(link.shortenedUrl)}}
-            className="cursor-pointer flex items-center gap-2 p-2 text-red-600 hover:text-red-600 hover:bg-red-50 transition-colors rounded"
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={() => {
+              setLinkToDelete(link.shortenedUrl);
+              setDeleteModal(true);
+            }}
             title="Delete link"
-            aria-label="Delete shortened URL"
           >
-            <Trash2 className="w-5 h-5" />
-            <span className="text-sm">Delete</span>
-          </button>
+            <Trash2 className="w-4 h-4" />
+            Delete
+          </Button>
         </div>
-      </div>
+      </Card>
       ))}
-      <div className="flex gap-4 justify-center items-center mt-6 mb-6">
-        <button 
-          onClick={() => {
-            setPage(prev => prev - 1);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          disabled={page === 1}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
-        >
-          <ArrowLeft size={16} />
-        </button>
-        
-        <span className="text-gray-700">
-          Page {page} of {totalPages}
-        </span>
-        
-        <button 
-          onClick={() => {
-            setPage(prev => prev + 1);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          disabled={page >= totalPages}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
-        >
-          <ArrowRight size={16} />
-        </button>
-      </div>
+      
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex gap-4 justify-center items-center mt-8 mb-6 animate-fade-in">
+          <Button
+            variant="outline"
+            size="icon"
+            disabled={page === 1}
+            onClick={() => {
+              setPage(prev => prev - 1);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            title="Previous page"
+          >
+            <ArrowLeft size={18} />
+          </Button>
+          
+          <span className="text-sm font-medium text-gray-700 px-4">
+            Page <span className="text-blue-600">{page}</span> of {totalPages}
+          </span>
+          
+          <Button
+            variant="outline"
+            size="icon"
+            disabled={page >= totalPages}
+            onClick={() => {
+              setPage(prev => prev + 1);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            title="Next page"
+          >
+            <ArrowRight size={18} />
+          </Button>
+        </div>
+      )}
       
       </div>
       <ConfirmModal
