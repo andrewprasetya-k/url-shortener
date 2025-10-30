@@ -358,7 +358,7 @@ export default function DashboardPage() {
           ) : (
             <button
               onClick={() => copyToClipboard(link._id, link.shortenedUrl)}
-              className="flex items-center gap-2 p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors rounded"
+              className="flex cursor-pointer items-center gap-2 p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors rounded"
               title="Copy to clipboard"
               aria-label="Copy shortened URL to clipboard"
             >
@@ -368,7 +368,7 @@ export default function DashboardPage() {
           )}
           <button
             onClick={() => setDeleteModal(true)}
-            className="flex items-center gap-2 p-2 text-red-600 hover:text-red-600 hover:bg-red-50 transition-colors rounded"
+            className="cursor-pointer flex items-center gap-2 p-2 text-red-600 hover:text-red-600 hover:bg-red-50 transition-colors rounded"
             title="Delete link"
             aria-label="Delete shortened URL"
           >

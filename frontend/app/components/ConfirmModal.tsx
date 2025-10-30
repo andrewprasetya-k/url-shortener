@@ -37,7 +37,7 @@ export default function ConfirmModal({
           <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
           <button
             onClick={onCancel}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-gray-400 hover:text-gray-600 cursor-pointer"
           >
             <X size={20} />
           </button>
@@ -48,13 +48,13 @@ export default function ConfirmModal({
         <div className="flex justify-end gap-3">
           <button
             onClick={onCancel}
-            className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100"
+            className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 cursor-pointer hover:bg-gray-100"
           >
             {cancelText}
           </button>
           <button
             onClick={onConfirm}
-            className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700"
+            className="px-4 py-2 rounded-lg bg-red-600 text-white cursor-pointer hover:bg-red-700"
           >
             {confirmText}
           </button>
