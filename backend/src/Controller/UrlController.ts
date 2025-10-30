@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Param, Delete, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Delete, Res, UseGuards, Query } from '@nestjs/common';
 import { UrlService } from '../Service/UrlService';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
@@ -41,9 +41,14 @@ export class UrlController {
 
   @Get('my-urls')
   @UseGuards(JwtAuthGuard)
-  async getMyUrls(@CurrentUser() user: { userId: string; username: string }) {
-    return this.urlService.findByUserId(user.userId);
+  async getMyUrls(
+    @CurrentUser() user: { userId: string; username: string },
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+  ) {
+    return this.urlService.findByUserId(user.userId, Number(page), Number(limit));
   }
+
 
   // @Get()
   // async getAllUrl(){

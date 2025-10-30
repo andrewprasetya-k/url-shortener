@@ -48,9 +48,21 @@ export class UrlService {
   }
 
   // READ BY USER ID
-  async findByUserId(userId: string): Promise<Url[]> {
-    return this.urlModel.find({ userId }).exec();
-  }
+async findByUserId(userId: string, page: number, limit: number): Promise<{ data: Url[]; total: number }> {
+  const showData = (page - 1) * limit;
+
+  const [data, total] = await Promise.all([
+    this.urlModel
+      .find({ userId })
+      .skip(showData)
+      .limit(limit)
+      .sort({ createdAt: -1 })
+      .exec(),
+    this.urlModel.countDocuments({ userId }).exec(),
+  ]);
+  return { data, total };
+}
+
 
   // READ BY SHORTENED URL
   async findByShortened(shortened: string): Promise<string> {
