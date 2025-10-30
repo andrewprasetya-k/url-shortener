@@ -1,8 +1,43 @@
 # Dependencies
 node_modules/
+*/node_modules/
 
-# Frontend specific
-frontend/eslint.config.mjs
-frontend/package-lock.json
-frontend/package.json
-frontend/postcss.config.mjs
+# Environment variables
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env.local
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+*.pem
+.vercel
