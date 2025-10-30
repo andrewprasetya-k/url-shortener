@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Copy, Trash2, Link2, TrendingUp, ChartLine, Calendar, Check, MousePointerClick, ArrowRight, ArrowLeft } from 'lucide-react';
 import React from 'react';
+import { toast } from 'sonner';
 import ConfirmModal from '../components/ConfirmModal';
 import { Button } from '../components/Button';
 import { Card, CardHeader, CardContent } from '../components/Card';
 import LoadingScreen from '../components/LoadingScreen';
-import {toast} from 'sonner';
+import { getApiUrl, getShortUrl } from '../../lib/api-config';
 
 interface ShortLink {
   _id: string;
@@ -51,7 +52,7 @@ export default function DashboardPage() {
       const refreshToken = localStorage.getItem('refresh_token');
       if (!refreshToken) return false;
 
-      const res = await fetch('http://localhost:3000/auth/refresh', {
+      const res = await fetch(getApiUrl('auth/refresh'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ refresh_token: refreshToken })
@@ -82,7 +83,7 @@ export default function DashboardPage() {
         return;
       }
       
-      const res = await fetch(`http://localhost:3000/my-urls?page=${page}&limit=5`, {
+      const res = await fetch(getApiUrl(`my-urls?page=${page}&limit=5`), {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -135,7 +136,7 @@ export default function DashboardPage() {
         return;
       }
       
-      const res = await fetch("http://localhost:3000/", {
+      const res = await fetch(getApiUrl(), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -185,7 +186,7 @@ export default function DashboardPage() {
         return;
       }
       
-      const res = await fetch(`http://localhost:3000/${id}`, {
+      const res = await fetch(getApiUrl(id), {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -219,7 +220,7 @@ export default function DashboardPage() {
   const copyToClipboard = (id: string, text: string) => {
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
-    navigator.clipboard.writeText(`http://localhost:3000/${text}`);
+    navigator.clipboard.writeText(getShortUrl(text));
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -389,12 +390,12 @@ export default function DashboardPage() {
         ) : null}
         <div className="flex-1 pl-2 mt-2 sm:mb-0">
           <a
-            href={`http://localhost:3000/${link.shortenedUrl}`}
+            href={getShortUrl(link.shortenedUrl)}
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-2 max-w-xs truncate text-lg sm:text-xl font-medium"
           >
-            {`http://localhost:3000/${link.shortenedUrl}`}
+            {getShortUrl(link.shortenedUrl)}
           </a>
         </div>
         <div className="flex-1 pl-2 mt-2 sm:mb-0">
