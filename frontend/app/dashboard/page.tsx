@@ -173,7 +173,7 @@ export default function DashboardPage() {
       setNewCustomShortenedLink("");
       await fetchLinks();
     } catch (error: any) {
-      toast.error(error.message[0] || "Failed to create short link");
+      toast.error(error.message || "Failed to create short link");
     } finally {
       setIsSubmitting(false);
     }
