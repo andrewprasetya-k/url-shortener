@@ -20,7 +20,6 @@ export default function ClientLayout({
       .filter(Boolean)
       .map(segment => segment.charAt(0).toUpperCase() + segment.slice(1))
       .join(' / ') || 'Home';
-
   return (
     <div className="flex min-h-screen">
       {!hideSidebar && <Sidebar />}
