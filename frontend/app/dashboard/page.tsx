@@ -10,6 +10,8 @@ import { Button } from '../components/Button';
 import { Card, CardHeader, CardContent } from '../components/Card';
 import LoadingScreen from '../components/LoadingScreen';
 import { getApiUrl, getShortUrl } from '../../lib/api-config';
+import { QrCode } from 'lucide-react';
+import QRCode from 'react-qr-code';
 
 interface ShortLink {
   _id: string;
@@ -459,6 +461,11 @@ export default function DashboardPage() {
             Delete
           </Button>
         </div>
+        <QRCode
+          value={getShortUrl(link.shortenedUrl)}
+          size={160}
+          className="mt-4 flex flex-row"
+        />
       </Card>
       ))}
       
