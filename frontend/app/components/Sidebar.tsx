@@ -1,10 +1,12 @@
 'use client';
 import { useState } from 'react';
-import { Menu, X, Home, LayoutDashboard, LogOut } from 'lucide-react';
+import { Menu, X, Home, LayoutDashboard, LogOut, Link2 } from 'lucide-react';
 import Link from 'next/link';
 import { sidebar } from '../config';
+import { Logo } from './Logo';
 import ConfirmModal from './ConfirmModal';
 import { getApiUrl } from '../../lib/api-config';
+
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
@@ -42,7 +44,9 @@ export default function Sidebar() {
         className={`fixed top-0 left-0 h-full ${sidebar.width} p-4 py-6 transform transition-transform duration-300 z-40 flex flex-col justify-between
         ${open ? 'translate-x-0' : '-translate-x-full sm:translate-x-0'}`}      >
         <div>
-          <h2 className="text-2xl font-bold pl-2 mb-6 text-gray-700" >Url Shortener</h2>
+          <div className="px-2 mb-6">
+            <Logo />
+          </div>
 
           <nav className="space-y-3">
             <Link
