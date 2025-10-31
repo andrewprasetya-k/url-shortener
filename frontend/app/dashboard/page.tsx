@@ -219,6 +219,40 @@ export default function DashboardPage() {
     }
   };
 
+  const downloadQRCode = (linkId: string, shortUrl: string) => {
+    const svg = document.getElementById(`qr-code-${linkId}`);
+    if (!svg) {
+      toast.error("QR Code element not found.");
+      return;
+    }
+
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      toast.error("Could not create canvas context.");
+      return;
+    }
+
+    const img = new Image();
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      const pngFile = canvas.toDataURL("image/png");
+
+      const downloadLink = document.createElement("a");
+      downloadLink.download = `${shortUrl}-qrcode.png`;
+      downloadLink.href = pngFile;
+      downloadLink.click();
+      toast.success("QR Code downloaded!");
+    };
+    img.onerror = () => {
+      toast.error("Failed to load QR code image for download.");
+    };
+    img.src = "data:image/svg+xml;base64," + btoa(svgData);
+  };
+
   const copyToClipboard = (id: string, text: string) => {
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
@@ -466,20 +500,22 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* Right side QR Code */}
-              <div className="shrink-0">
+              {/* Right side QR Code + Download Button */}
+              <div className="flex flex-col items-center gap-2">
                 <QRCode
+                  id={`qr-code-${link._id}`}
                   value={getShortUrl(link.shortenedUrl)}
                   size={128}
                 />
                 <Button
                   variant="outline"
                   size="sm"
-                  className="mt-2 w-full"
-                  onClick={() => window.open(getShortUrl(link.shortenedUrl), '_blank')}
+                  onClick={() => downloadQRCode(link._id, link.shortenedUrl)}
+                  title="Download QR Code"
+                  className="w-full"
                 >
                   <QrCode className="w-4 h-4 mr-2" />
-                  Open Link
+                  Download
                 </Button>
               </div>
             </div>
