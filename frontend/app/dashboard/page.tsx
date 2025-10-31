@@ -255,7 +255,7 @@ export default function DashboardPage() {
 
   const copyToClipboard = (id: string, text: string) => {
     setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 2000);
+    setTimeout(() => setCopiedId(null), 3000);
     navigator.clipboard.writeText(getShortUrl(text));
   };
 
