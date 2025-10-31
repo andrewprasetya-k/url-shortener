@@ -9,7 +9,7 @@ import ConfirmModal from '../components/ConfirmModal';
 import { Button } from '../components/Button';
 import { Card, CardHeader, CardContent } from '../components/Card';
 import LoadingScreen from '../components/LoadingScreen';
-import { getApiUrl, getShortUrl } from '../../lib/api-config';
+import { getApiUrl, getShortUrl, fetchWithAuth } from '../../lib/api-config';
 import { QrCode } from 'lucide-react';
 import QRCode from 'react-qr-code';
 
@@ -48,66 +48,14 @@ export default function DashboardPage() {
     fetchLinks();
   }, [router, page, itemsPerPage, totalItems]);
 
-  // Helper function untuk refresh access token
-  const refreshAccessToken = async (): Promise<boolean> => {
-    try {
-      const refreshToken = localStorage.getItem('refresh_token');
-      if (!refreshToken) return false;
-
-      const res = await fetch(getApiUrl('auth/refresh'), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ refresh_token: refreshToken })
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        localStorage.setItem('access_token', data.access_token);
-        if (data.refresh_token) {
-          localStorage.setItem('refresh_token', data.refresh_token);
-        }
-        return true; // Berhasil refresh
-      }
-      return false;
-    } catch (error) {
-      console.error('Refresh token error:', error);
-      return false;
-    }
-  };
 
   const fetchLinks = async () => {
+    setLoading(true);
     try {
-      const token = localStorage.getItem('access_token');
-      
-      if (!token) {
-        toast.error('Not authenticated. Please login.');
-        setLoading(false);
-        return;
-      }
-      
-      const res = await fetch(getApiUrl(`my-urls?page=${page}&limit=5`), {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const res = await fetchWithAuth(getApiUrl(`my-urls?page=${page}&limit=5`));
       
       if (!res.ok) {
-        if (res.status === 401) {
-          // Coba refresh token dulu
-          const refreshed = await refreshAccessToken();
-          
-          if (refreshed) {
-            // Token berhasil di-refresh, retry request
-            return fetchLinks();
-          } else {
-            // Refresh token gagal atau expired, logout
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('refresh_token');
-            document.cookie = 'access_token=; path=/; max-age=0';
-            router.push('/login');
-            return;
-          }
-        }
+        // The auth wrapper handles 401, so we only need to handle other errors.
         throw new Error("Failed to fetch links");
       }
       const data = await res.json();
@@ -122,58 +70,32 @@ export default function DashboardPage() {
 
   const handleSubmit = async () => {
     if (!newOriginalUrl) return;
-    
     setIsSubmitting(true);
-    
     try {
-      const token = localStorage.getItem('access_token');
-      
-      if (!token) {
-        toast.error('Not authenticated. Please login.');
-        return;
-      }
-
-      if(newCustomShortenedLink && !/^[a-zA-Z0-9-_]+$/.test(newCustomShortenedLink)) {
+      if (newCustomShortenedLink && !/^[a-zA-Z0-9-_]+$/.test(newCustomShortenedLink)) {
         toast.error('Custom url can only contain alphanumeric characters, hyphens, and underscores');
         return;
       }
-      
-      const res = await fetch(getApiUrl(), {
+      const res = await fetchWithAuth(getApiUrl(), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
         body: JSON.stringify({
           customShortLink: newCustomShortenedLink,
           urlName: newUrlName,
           originalUrl: newOriginalUrl
         })
       });
-      
       if (!res.ok) {
-        if (res.status === 401) {
-          // Coba refresh token
-          const refreshed = await refreshAccessToken();
-          if (refreshed) {
-            // Retry submit
-            return handleSubmit();
-          } else {
-            localStorage.clear();
-            router.push('/login');
-            return;
-          }
-        }
-        const errorText = await res.text();
-        throw new Error(errorText || "Failed to create short link");
+        const errorData = await res.json().catch(() => ({ message: 'Failed to create short link' }));
+        throw new Error(errorData.message);
       }
       toast.success('Short link created successfully!');
       setNewOriginalUrl("");
       setNewUrlName("");
       setNewCustomShortenedLink("");
-      await fetchLinks();
+      fetchLinks(); // Refetch to show the new link
     } catch (error: any) {
-      toast.error(error.message || "Failed to create short link");
+      const errorMessage = Array.isArray(error.message) ? error.message.join(', ') : error.message;
+      toast.error(errorMessage || "Failed to create short link");
     } finally {
       setIsSubmitting(false);
     }
@@ -181,39 +103,14 @@ export default function DashboardPage() {
 
   const handleDelete = async (id: string) => {
     try {
-      const token = localStorage.getItem('access_token');
-      
-      if (!token) {
-        toast.error('Not authenticated. Please login.');
-        return;
-      }
-      
-      const res = await fetch(getApiUrl(id), {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      
+      const res = await fetchWithAuth(getApiUrl(id), { method: 'DELETE' });
       if (!res.ok) {
-        if (res.status === 401) {
-          // Coba refresh token
-          const refreshed = await refreshAccessToken();
-          if (refreshed) {
-            // Retry delete
-            return handleDelete(id);
-          } else {
-            localStorage.clear();
-            router.push('/login');
-            return;
-          }
-        }
         throw new Error("Failed to delete link");
       }
       toast.success('Link deleted successfully!');
       setDeleteModal(false);
       setLinkToDelete(null);
-      await fetchLinks();
+      fetchLinks(); // Refetch to update the list
     } catch (error: any) {
       toast.error(error.message || "Failed to delete link");
     }
