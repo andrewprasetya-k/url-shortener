@@ -383,90 +383,107 @@ export default function DashboardPage() {
             className="mb-4 p-4" 
             style={{ animationDelay: `${index * 0.05}s` }}
           >
-        {link.urlName ? (
-          <div className="flex-1 p-2 sm:mb-0">
-            <span className="truncate font-semibold text-2xl sm:text-3xl text-gray-900">
-          {link.urlName}
-            </span>
-          </div>
-        ) : null}
-        <div className="flex-1 pl-2 mt-2 sm:mb-0">
-          <a
-            href={getShortUrl(link.shortenedUrl)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-2 max-w-xs truncate text-lg sm:text-xl font-medium"
-          >
-            {getShortUrl(link.shortenedUrl)}
-          </a>
-        </div>
-        <div className="flex-1 pl-2 mt-2 sm:mb-0">
-          <a
-            href={link.originalUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-700 hover:text-gray-800 hover:underline flex items-center gap-2 max-w-xs truncate text-sm sm:text-base"
-          >
-            <span className="truncate">{link.originalUrl}</span>
-          </a>
-        </div>
-        <div className="my-2 sm:mb-0 flex flex-wrap gap-2">
-          <span className="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-800 bg-gray-50 rounded">
-            <ChartLine className="w-4 h-4 mr-2" />
-            <span className="text-sm">{link.timesClicked} Clicks</span>
-          </span>
-          <span className="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-600 bg-gray-50 rounded">
-            <Calendar className="w-4 h-4 mx-2" />
-            <span className="text-xs text-gray-500">
-              {new Date(link.createdAt).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-              })}
-            </span>
-          </span>
-        </div>
-        <div className="flex items-center gap-2 mt-4 sm:mb-0">
-          {copiedId === link._id ? (
-            <Button
-              variant="success"
-              size="sm"
-              disabled
-              className="animate-bounce-in"
-            >
-              <Check className="w-4 h-4" />
-              Copied!
-            </Button>
-          ) : (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => copyToClipboard(link._id, link.shortenedUrl)}
-              title="Copy to clipboard"
-            >
-              <Copy className="w-4 h-4" />
-              Copy
-            </Button>
-          )}
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={() => {
-              setLinkToDelete(link.shortenedUrl);
-              setDeleteModal(true);
-            }}
-            title="Delete link"
-          >
-            <Trash2 className="w-4 h-4" />
-            Delete
-          </Button>
-        </div>
-        <QRCode
-          value={getShortUrl(link.shortenedUrl)}
-          size={160}
-          className="mt-4 flex flex-row"
-        />
-      </Card>
+            <div className="flex flex-col sm:flex-row justify-between items-center w-full gap-6">
+              {/* Left side content */}
+              <div className="grow w-full">
+                {link.urlName ? (
+                  <div className="flex-1 p-2 sm:mb-0">
+                    <span className="truncate font-semibold text-2xl sm:text-3xl text-gray-900">
+                      {link.urlName}
+                    </span>
+                  </div>
+                ) : null}
+                <div className="flex-1 pl-2 mt-2 sm:mb-0">
+                  <a
+                    href={getShortUrl(link.shortenedUrl)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-2 max-w-xs truncate text-lg sm:text-xl font-medium"
+                  >
+                    {getShortUrl(link.shortenedUrl)}
+                  </a>
+                </div>
+                <div className="flex-1 pl-2 mt-2 sm:mb-0">
+                  <a
+                    href={link.originalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-700 hover:text-gray-800 hover:underline flex items-center gap-2 max-w-xs truncate text-sm sm:text-base"
+                  >
+                    <span className="truncate">{link.originalUrl}</span>
+                  </a>
+                </div>
+                <div className="my-2 sm:mb-0 flex flex-wrap gap-2">
+                  <span className="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-800 bg-gray-50 rounded">
+                    <ChartLine className="w-4 h-4 mr-2" />
+                    <span className="text-sm">{link.timesClicked} Clicks</span>
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-600 bg-gray-50 rounded">
+                    <Calendar className="w-4 h-4 mx-2" />
+                    <span className="text-xs text-gray-500">
+                      {new Date(link.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                      })}
+                    </span>
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 mt-4 sm:mb-0">
+                  {copiedId === link._id ? (
+                    <Button
+                      variant="success"
+                      size="sm"
+                      disabled
+                      className="animate-bounce-in"
+                    >
+                      <Check className="w-4 h-4" />
+                      Copied!
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => copyToClipboard(link._id, link.shortenedUrl)}
+                      title="Copy to clipboard"
+                    >
+                      <Copy className="w-4 h-4" />
+                      Copy
+                    </Button>
+                  )}
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => {
+                      setLinkToDelete(link.shortenedUrl);
+                      setDeleteModal(true);
+                    }}
+                    title="Delete link"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    Delete
+                  </Button>
+                </div>
+              </div>
+
+              {/* Right side QR Code */}
+              <div className="shrink-0">
+                <QRCode
+                  value={getShortUrl(link.shortenedUrl)}
+                  size={128}
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-2 w-full"
+                  onClick={() => window.open(getShortUrl(link.shortenedUrl), '_blank')}
+                >
+                  <QrCode className="w-4 h-4 mr-2" />
+                  Open Link
+                </Button>
+              </div>
+            </div>
+          </Card>
       ))}
       
       {/* Pagination */}
