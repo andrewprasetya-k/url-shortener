@@ -13,8 +13,8 @@ export class AuthController {
 
   @Post('register')
   @HttpCode(HttpStatus.OK) // Changed to OK as it's an initiation, not final creation
-  async initiateRegistration(@Body() createUserDto: CreateUserDto) {
-    return this.authService.initiateRegistration(createUserDto);
+  async register(@Body() createUserDto: CreateUserDto) {
+    return this.authService.register(createUserDto);
   }
 
   @Post('register/verify')

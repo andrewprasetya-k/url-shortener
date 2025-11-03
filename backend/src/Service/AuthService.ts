@@ -36,16 +36,14 @@ export class AuthService {
     });
   }
 
-  async initiateRegistration(createUserDto: CreateUserDto): Promise<{ message: string }> {
+  async register(createUserDto: CreateUserDto): Promise<{ message: string }> {
     const { username, email, password } = createUserDto;
 
-    // 1. Check if user already exists in main User collection
     const existingUser = await this.userModel.findOne({ $or: [{ username }, { email }] }).exec();
     if (existingUser) {
       throw new ConflictException('Username atau email sudah terdaftar');
     }
 
-    // 2. Check if there's a pending OTP for this email
     const existingOtp = await this.otpModel.findOne({ email }).exec();
     if (existingOtp) {
       // Optionally, update the existing OTP or throw an error if too many requests
