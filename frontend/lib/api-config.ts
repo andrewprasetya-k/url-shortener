@@ -6,7 +6,7 @@ export function getApiUrl(path: string = '') {
 }
 
 export function getShortUrl(path: string = '') {
-  return `${SHORT_URL_BASE}/${path}`;
+  return `${API_BASE_URL}/${path}`;
 }
 
 async function refreshAccessToken(): Promise<boolean> {
