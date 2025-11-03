@@ -149,7 +149,7 @@ export class AuthService {
     // Check if OTP has expired (redundant with TTL index but good for immediate check)
     if (otpRecord.expiresAt < new Date()) {
       await this.otpModel.deleteOne({ email }).exec(); // Clean up expired OTP
-      throw new UnauthorizedException('Kode verifikasi sudah kedaluwarsa.');
+      throw new UnauthorizedException('Kode verifikasi sudah kadaluwarsa.');
     }
 
     const hashedInputOtp = crypto.createHash('sha256').update(otp).digest('hex');
