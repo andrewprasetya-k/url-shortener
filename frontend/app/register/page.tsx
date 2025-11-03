@@ -12,6 +12,8 @@ export default function RegisterPage() {
   const [message, setMessage] = useState('');
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState('register');
+  const [otp, setOtp] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -36,7 +38,8 @@ export default function RegisterPage() {
       const data = await res.json();
 
       if (res.ok) {
-        setMessage('Register successful!');
+        setMessage(data.message || 'Kode OTP telah dikirim ke email anda!');
+        setStep('verify');
         // Redirect menggunakan router.push
         setTimeout(() => {
           router.push('/login');
@@ -51,6 +54,26 @@ export default function RegisterPage() {
       setLoading(false);
     }
   };
+
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await fetch(getApiUrl('auth/register/verify'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, otp }),
+      });
+    }
+    catch (error:any) {
+      setMessage(error.message || "An error occurred");
+    }
+    finally {
+      setLoading(false);
+    }
+  }
 
   // Show loading screen saat register process
   if (loading) {
