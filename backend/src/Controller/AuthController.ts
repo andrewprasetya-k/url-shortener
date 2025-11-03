@@ -3,6 +3,7 @@ import { AuthService } from '../Service/AuthService';
 import { CreateUserDto } from '../Dto/CreateUserDto';
 import { LoginUserDto } from '../Dto/LoginUserDto';
 import { RefreshTokenDto } from '../Dto/RefreshTokenDto';
+import { VerifyOtpDto } from '../Dto/VerifyOtpDto'; // Import new DTO
 import { JwtAuthGuard } from '../Auth/AuthGuard';
 import { CurrentUser } from '../Decorator/UserDecorator';
 
@@ -11,9 +12,15 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
+  @HttpCode(HttpStatus.OK) // Changed to OK as it's an initiation, not final creation
+  async initiateRegistration(@Body() createUserDto: CreateUserDto) {
+    return this.authService.initiateRegistration(createUserDto);
+  }
+
+  @Post('register/verify')
   @HttpCode(HttpStatus.CREATED)
-  async register(@Body() createUserDto: CreateUserDto) {
-    return this.authService.register(createUserDto);
+  async verifyRegistration(@Body() verifyOtpDto: VerifyOtpDto) {
+    return this.authService.verifyOtpAndCreateUser(verifyOtpDto.email, verifyOtpDto.otp);
   }
 
   @Post('login')
