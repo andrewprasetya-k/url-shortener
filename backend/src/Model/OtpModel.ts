@@ -14,8 +14,8 @@ export class Otp {
   @Prop({ required: true })
   expiresAt: Date;
   
-  @Prop({ required: true })
-  userData: Date;
+  @Prop({ type: Object, required: true })
+  userData: Record<string, any>;
 }
 
 export const OtpSchema = SchemaFactory.createForClass(Otp);
