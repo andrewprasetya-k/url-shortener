@@ -11,6 +11,7 @@ import { Url, UrlSchema } from './Model/UrlModel';
 import { User, UserSchema } from './Model/UserModel';
 import { RefreshToken, RefreshTokenSchema } from './Model/RefreshTokenModel';
 import { JwtStrategy } from './Auth/JwtStrategy';
+import { Otp, OtpSchema } from './Model/OtpModel';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { JwtStrategy } from './Auth/JwtStrategy';
     MongooseModule.forFeature([
       { name: Url.name, schema: UrlSchema },
       { name: User.name, schema: UserSchema },
-      { name: RefreshToken.name, schema: RefreshTokenSchema }
+      { name: RefreshToken.name, schema: RefreshTokenSchema },
+      { name: Otp.name, schema: OtpSchema }
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
