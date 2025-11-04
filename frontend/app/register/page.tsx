@@ -40,10 +40,6 @@ export default function RegisterPage() {
       if (res.ok) {
         setMessage(data.message || 'Kode OTP telah dikirim ke email anda!');
         setStep('verify');
-        // Redirect menggunakan router.push
-        setTimeout(() => {
-          router.push('/login');
-        }, 500);
       } else {
         setMessage(`${data.message || 'Register account failed'}`);
       }
@@ -66,6 +62,15 @@ export default function RegisterPage() {
         },
         body: JSON.stringify({ email, otp }),
       });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage(data.message || 'Verifikasi OTP berhasil! Silakan masuk.');
+        router.push('/login');
+      } else {
+        setMessage(`${data.message || 'Verifikasi OTP gagal.'}`);
+      }
     }
     catch (error:any) {
       setMessage(error.message || "An error occurred");
