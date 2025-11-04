@@ -82,7 +82,8 @@ export default function RegisterPage() {
 
   // Show loading screen saat register process
   if (loading) {
-    return <LoadingScreen />;
+    return <LoadingScreen
+    title='Creating your account' />;
   }
 
   return (
