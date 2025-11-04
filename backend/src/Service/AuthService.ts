@@ -65,7 +65,7 @@ export class AuthService {
       email,
       otp: hashedOtp,
       expiresAt,
-      userData: { username, email, password: hashedPassword },
+      userData: { username, email, password },
     });
 
     // 7. Send OTP via email
