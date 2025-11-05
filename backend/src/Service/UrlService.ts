@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Url, UrlDocument } from '../Model/UrlModel';
 import { CreateUrlDto } from '../Dto/CreateUrlDto';
+import { title } from 'process';
 
 @Injectable()
 export class UrlService {
@@ -48,12 +49,20 @@ export class UrlService {
   }
 
   // READ BY USER ID
-async findByUserId(userId: string, page: number, limit: number): Promise<{ data: Url[]; total: number }> {
+async findByUserId(userId: string, page: number, limit: number, search?: string): Promise<{ data: Url[]; total: number }> {
   const showData = (page - 1) * limit;
+  const filter:any={userId};
 
+  if (search){
+    filter.$or=[
+      {originalUrl: {$regex:search, $options:'i'}},
+      {shortenedUrl: {$regex:search, $options:'i'}},
+      {title: {$regex:search, $options:'i'}},
+    ];
+  }
   const [data, total] = await Promise.all([
     this.urlModel
-      .find({ userId })
+      .find({ filter })
       .skip(showData)
       .limit(limit)
       .sort({ createdAt: -1 })
