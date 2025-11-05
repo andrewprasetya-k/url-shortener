@@ -49,28 +49,29 @@ export class UrlService {
   }
 
   // READ BY USER ID
-async findByUserId(userId: string, page: number, limit: number, search?: string): Promise<{ data: Url[]; total: number }> {
-  const showData = (page - 1) * limit;
-  const filter:any={userId};
+  async findByUserId(userId: string, page: number, limit: number, search?: string): Promise<{ data: Url[]; total: number }> {
+    const showData = (page - 1) * limit;
 
-  if (search){
-    filter.$or=[
-      {originalUrl: {$regex:search, $options:'i'}},
-      {shortenedUrl: {$regex:search, $options:'i'}},
-      {title: {$regex:search, $options:'i'}},
-    ];
+    // Membuat filter query dinamis
+    const filter: any = { userId };
+    if (search) {
+      filter.$or = [
+        { originalUrl: { $regex: search, $options: 'i' } }, // 'i' untuk case-insensitive
+        { shortenedUrl: { $regex: search, $options: 'i' } },
+      ];
+    }
+
+    const [data, total] = await Promise.all([
+      this.urlModel
+        .find(filter) // <-- Menggunakan filter dinamis
+        .skip(showData)
+        .limit(limit)
+        .sort({ createdAt: -1 })
+        .exec(),
+      this.urlModel.countDocuments(filter).exec(), // <-- Menghitung dokumen yang cocok dengan filter
+    ]);
+    return { data, total };
   }
-  const [data, total] = await Promise.all([
-    this.urlModel
-      .find({ filter })
-      .skip(showData)
-      .limit(limit)
-      .sort({ createdAt: -1 })
-      .exec(),
-    this.urlModel.countDocuments({ userId }).exec(),
-  ]);
-  return { data, total };
-}
 
 
   // READ BY SHORTENED URL

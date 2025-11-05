@@ -45,8 +45,9 @@ export class UrlController {
     @CurrentUser() user: { userId: string; username: string },
     @Query('page') page = 1,
     @Query('limit') limit = 10,
+    @Query('search') search?: string,
   ) {
-    return this.urlService.findByUserId(user.userId, Number(page), Number(limit));
+    return this.urlService.findByUserId(user.userId, Number(page), Number(limit), search);
   }
 
 
