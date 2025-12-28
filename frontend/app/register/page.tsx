@@ -93,7 +93,7 @@ export default function RegisterPage() {
             </svg>
           </div>
           <h1 className="text-4xl font-bold mb-4 leading-tight">
-            Mulai Perjalanan Anda Bersama Kami
+            Registrasi akun baru
           </h1>
           <p className="text-indigo-200 max-w-md">
             Buat akun untuk memendekkan URL, melacak klik, dan mengelola tautan
