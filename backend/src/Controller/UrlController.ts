@@ -39,6 +39,11 @@ export class UrlController {
     return this.urlService.create(createUrlDto, user.userId);
   }
 
+  @Post('create-url')
+  async createShortUrlPublic(@Body() createUrlDto: CreateUrlDto) {
+    return this.urlService.createPublic(createUrlDto);
+  }
+
   @Get('my-urls')
   @UseGuards(JwtAuthGuard)
   async getMyUrls(

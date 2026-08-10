@@ -16,5 +16,5 @@ export class CreateUrlDto {
     protocols: ['http', 'https']
   }, { message: 'Original URL must be a valid URL with http:// or https://' })
   @IsNotEmpty({ message: 'Original URL should not be empty' })
-  originalUrl: string;
+  originalUrl: string | undefined;
 }

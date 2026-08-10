@@ -16,32 +16,69 @@ export class UrlService {
       if (existingUrl) {
         throw new InternalServerErrorException(`Custom alias "${createUrlDto.customShortLink}" is already in use`);
       }
-      const newUrl = new this.urlModel({ 
-        ...createUrlDto, 
-        shortenedUrl: createUrlDto.customShortLink, 
+      const newUrl = new this.urlModel({
+        ...createUrlDto,
+        shortenedUrl: createUrlDto.customShortLink,
         timesClicked: 0,
-        userId 
+        userId,
       });
       try {
         return await newUrl.save();
       } catch (error) {
-        throw new InternalServerErrorException(`Error creating shortened URL: ${error.message}`);
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        throw new InternalServerErrorException(`Error creating shortened URL: ${message}`);
       }
     }
     const shortenedUrl = Math.random().toString(36).substring(2, 8);
-    const newUrl = new this.urlModel({ 
-      ...createUrlDto, 
-      shortenedUrl, 
+    const newUrl = new this.urlModel({
+      ...createUrlDto,
+      shortenedUrl,
       timesClicked: 0,
-      userId 
+      userId,
     });
 
     try {
       return await newUrl.save();
     } catch (error) {
-      throw new InternalServerErrorException(`Error creating shortened URL: ${error.message}`);
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      throw new InternalServerErrorException(`Error creating shortened URL: ${message}`);
     }
   }
+  
+  // PUBLIC CREATE
+  async createPublic(createUrlDto: CreateUrlDto): Promise<Url> {
+    if (createUrlDto.customShortLink && createUrlDto.customShortLink.trim() !== '') {
+      const existingUrl = await this.urlModel.findOne({ shortenedUrl: createUrlDto.customShortLink }).exec();
+      if (existingUrl) {
+        throw new InternalServerErrorException(`Custom alias "${createUrlDto.customShortLink}" is already in use`);
+      }
+      const newUrl = new this.urlModel({
+        ...createUrlDto,
+        shortenedUrl: createUrlDto.customShortLink,
+        timesClicked: 0,
+      });
+      try {
+        return await newUrl.save();
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        throw new InternalServerErrorException(`Error creating shortened URL: ${message}`);
+      }
+    }
+    const shortenedUrl = Math.random().toString(36).substring(2, 8);
+    const newUrl = new this.urlModel({
+      ...createUrlDto,
+      shortenedUrl,
+      timesClicked: 0,
+    });
+
+    try {
+      return await newUrl.save();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      throw new InternalServerErrorException(`Error creating shortened URL: ${message}`);
+    }
+  }
+
 
   // READ ALL
   async findAll(): Promise<Url[]> {
@@ -107,7 +144,7 @@ export class UrlService {
       throw new NotFoundException(`URL with shortenedUrl="${shortened}" not found`);
     }
 
-    if (url.userId.toString() !== userId) {
+    if (!url.userId || url.userId.toString() !== userId) {
       throw new NotFoundException(`You don't have permission to delete this URL`);
     }
 

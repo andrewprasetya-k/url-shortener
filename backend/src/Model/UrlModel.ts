@@ -11,8 +11,8 @@ export class Url {
   @Prop()
   shortenedUrl: string;
 
-  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
-  userId: Types.ObjectId;
+  @Prop({ type: Types.ObjectId, ref: 'User' })
+  userId?: Types.ObjectId;
   
   @Prop()
   originalUrl: string;
