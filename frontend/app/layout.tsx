@@ -2,10 +2,9 @@ import "./globals.css";
 import ClientLayout from "./ClientLayout";
 import { Toaster } from "sonner";
 import type { Metadata } from "next";
-import logo from "./components/logo.svg";
 
 export const metadata: Metadata = {
-  title: "URL Shortener - Shorten Your Links",
+  title: "Zippr | Shorten your links with ease",
   description: "Free URL shortener service to create short links",
   icons: "/favicon.svg",
 };

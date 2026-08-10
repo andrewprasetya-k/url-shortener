@@ -9,7 +9,7 @@ export default function LoadingScreen({ title = "Preparing Your Dashboard", subt
         {/* Elegant spinner */}
         <div className="relative h-20 w-20 mx-auto">
           <svg
-            className="animate-spin-slow text-blue-500"
+            className="animate-spin-slow text-blue-600"
             viewBox="0 0 50 50"
           >
             <circle

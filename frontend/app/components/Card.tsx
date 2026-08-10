@@ -9,7 +9,7 @@ export function Card({ className, animate = true, children, ...props }: CardProp
   return (
     <div
       className={cn(
-        "bg-white border border-gray-200 rounded-md shadow-sm hover:shadow-md transition-all duration-300",
+        "bg-white border border-gray-200 rounded-lg",
         animate && "animate-fade-in",
         className
       )}

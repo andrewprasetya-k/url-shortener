@@ -1,61 +1,62 @@
-'use client';
-import { useState } from 'react';
-import { Menu, X, Home, LayoutDashboard, LogOut, Link2 } from 'lucide-react';
-import Link from 'next/link';
-import { sidebar } from '../config';
-import { Logo } from './Logo';
-import ConfirmModal from './ConfirmModal';
-import { getApiUrl } from '../../lib/api-config';
-
+"use client";
+import { useState } from "react";
+import { Menu, X, Home, LayoutDashboard, LogOut, Link2 } from "lucide-react";
+import Link from "next/link";
+import { sidebar } from "../config";
+import { Logo } from "./Logo";
+import ConfirmModal from "./ConfirmModal";
+import { getApiUrl } from "../../lib/api-config";
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const logout = async () => {
     try {
-      await fetch(getApiUrl('auth/logout'), {
-        method: 'POST',
+      await fetch(getApiUrl("auth/logout"), {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ refresh_token: localStorage.getItem('refresh_token') }),
+        body: JSON.stringify({
+          refresh_token: localStorage.getItem("refresh_token"),
+        }),
       });
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
     } finally {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
-      document.cookie = 'access_token=; path=/; max-age=0';
-      window.location.href = '/login';
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      document.cookie = "access_token=; path=/; max-age=0";
+      window.location.href = "/login";
     }
-  }
+  };
   return (
     <>
       {/* Tombol toggle (muncul di layar kecil) */}
       <button
         onClick={() => setOpen(!open)}
-        className="sm:hidden fixed top-4 left-4 z-100 bg-blue-600 text-white p-2 rounded-md"
+        className="sm:hidden fixed top-4 left-4 z-100 bg-white text-gray-700 p-2 rounded-lg"
       >
         {open ? <X size={20} /> : <Menu size={20} />}
       </button>
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full ${sidebar.width} p-4 py-6 transform transition-transform duration-300 z-40 flex flex-col justify-between
-        ${open ? 'translate-x-0' : '-translate-x-full sm:translate-x-0'}`}      >
+        className={`fixed top-0 left-0 h-full ${sidebar.width} p-4 py-6  border-gray-200 bg-white transform transition-transform duration-200 z-40 flex flex-col justify-between
+        ${open ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}`}
+      >
         <div>
           <div className="px-2 mb-6">
             <Logo />
           </div>
 
-          <nav className="space-y-3">
+          <nav className="space-y-1">
             <Link
               href="/dashboard"
-              className="flex text-white items-center gap-2 p-2 rounded bg-blue-600 transition hover:bg-blue-700"
+              className="flex text-white items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 text-sm font-medium transition hover:bg-blue-700"
             >
               <LayoutDashboard size={18} /> Dashboard
             </Link>
-
           </nav>
         </div>
 
@@ -64,7 +65,7 @@ export default function Sidebar() {
             type="button"
             onClick={() => setShowLogoutModal(true)}
             aria-label="Logout"
-            className="w-full text-left text-white bg-red-600 flex items-center gap-2 p-2 rounded hover:bg-red-700 transition cursor-pointer"
+            className="w-full text-left text-red-600 flex items-center gap-2 px-3 py-2 rounded-lg text-sm hover:text-white hover:bg-red-600 transition cursor-pointer"
           >
             <LogOut size={18} /> Logout
           </button>
