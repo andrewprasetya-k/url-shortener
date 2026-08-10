@@ -11,8 +11,8 @@ export default function ClientLayout({
   children: React.ReactNode 
 }) {
   const pathname = usePathname() || '';
-  const hideSidebar = pathname === '/login' || pathname === '/register';
-  const hideTopbar = pathname === '/login' || pathname === '/register';
+  const hideSidebar = pathname === '/' || pathname === '/login' || pathname === '/register';
+  const hideTopbar = pathname === '/' || pathname === '/login' || pathname === '/register';
 
   const pageTitle =
     pathname

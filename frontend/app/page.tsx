@@ -1,5 +1,223 @@
-import { redirect } from 'next/navigation';
+"use client";
+
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { Copy, Check, Link2 } from "lucide-react";
+import { Button } from "./components/Button";
+import { Card, CardHeader, CardContent } from "./components/Card";
+import { getApiUrl, getShortUrl } from "../lib/api-config";
 
 export default function Home() {
-  redirect('/dashboard');
+  const [originalUrl, setOriginalUrl] = useState("");
+  const [urlName, setUrlName] = useState("");
+  const [customShortLink, setCustomShortLink] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [result, setResult] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setIsLoggedIn(!!localStorage.getItem("access_token"));
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!originalUrl) return;
+
+    if (customShortLink && !/^[a-zA-Z0-9-_]+$/.test(customShortLink)) {
+      toast.error(
+        "Custom url can only contain alphanumeric characters, hyphens, and underscores",
+      );
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch(getApiUrl("create-url"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ originalUrl, urlName, customShortLink }),
+      });
+
+      const data = await res
+        .json()
+        .catch(() => ({ message: "Failed to create short link" }));
+
+      if (!res.ok) {
+        const errorMessage = Array.isArray(data.message)
+          ? data.message.join(", ")
+          : data.message;
+        throw new Error(errorMessage || "Failed to create short link");
+      }
+
+      toast.success("Short link created!");
+      setResult(getShortUrl(data.shortenedUrl));
+      setOriginalUrl("");
+      setUrlName("");
+      setCustomShortLink("");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to create short link");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const copyToClipboard = () => {
+    if (!result) return;
+    navigator.clipboard.writeText(result);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 3000);
+  };
+
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-white px-4 py-12">
+      <div className="w-full max-w-sm">
+        {/* Logo */}
+        <div className="flex justify-center mb-8">
+          <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
+            <svg viewBox="0 0 120 120" className="w-6 h-6">
+              <path
+                d="M28 34 L92 34 L48 86 L92 86"
+                fill="none"
+                stroke="#ffffff"
+                strokeWidth="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+
+        {/* Header Section */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-semibold text-gray-900 mb-1">
+            Shorten your links
+          </h1>
+          <p className="text-gray-500 text-sm">
+            No account needed — paste a link and go.
+          </p>
+        </div>
+
+        {/* Form Section */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm text-gray-700 mb-1.5">
+              Original URL <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="url"
+              placeholder="https://example.com/your-long-url"
+              value={originalUrl}
+              onChange={(e) => setOriginalUrl(e.target.value)}
+              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 transition-colors"
+              required
+              disabled={isSubmitting}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-sm text-gray-700 mb-1.5">
+                Title (Optional)
+              </label>
+              <input
+                type="text"
+                placeholder="Memorable title"
+                value={urlName}
+                onChange={(e) => setUrlName(e.target.value)}
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 transition-colors"
+                disabled={isSubmitting}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm text-gray-700 mb-1.5">
+                Custom Link (Optional)
+              </label>
+              <input
+                type="text"
+                placeholder="my-custom-link"
+                value={customShortLink}
+                onChange={(e) => setCustomShortLink(e.target.value)}
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 transition-colors"
+                disabled={isSubmitting}
+              />
+            </div>
+          </div>
+
+          <Button
+            type="submit"
+            disabled={!originalUrl}
+            isLoading={isSubmitting}
+            className="w-full bg-blue-600 hover:bg-blue-700"
+          >
+            <Link2 className="w-4 h-4" />
+            Shorten URL
+          </Button>
+        </form>
+
+        {/* Result */}
+        {result && (
+          <div className="mt-5 p-4 bg-blue-50 border border-blue-100 rounded-lg">
+            <p className="text-xs text-blue-700 mb-1.5 font-medium">
+              Your short link is ready
+            </p>
+            <div className="flex items-center gap-2">
+              <a
+                href={result}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 min-w-0 truncate text-blue-700 hover:underline text-sm font-medium"
+              >
+                {result}
+              </a>
+              <Button
+                type="button"
+                variant={copied ? "success" : "outline"}
+                size="icon"
+                onClick={copyToClipboard}
+                title="Copy to clipboard"
+                className="shrink-0"
+              >
+                {copied ? (
+                  <Check className="w-4 h-4" />
+                ) : (
+                  <Copy className="w-4 h-4" />
+                )}
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Footer */}
+        <p className="text-center text-sm text-gray-600 mt-8">
+          {isLoggedIn ? (
+            <a
+              href="/dashboard"
+              className="text-blue-600 font-medium hover:underline"
+            >
+              Go to Dashboard
+            </a>
+          ) : (
+            <>
+              <a
+                href="/login"
+                className="text-blue-600 font-medium hover:underline"
+              >
+                Log in
+              </a>{" "}
+              or{" "}
+              <a
+                href="/register"
+                className="text-blue-600 font-medium hover:underline"
+              >
+                Sign up
+              </a>{" "}
+              to manage all your links.
+            </>
+          )}
+        </p>
+      </div>
+    </div>
+  );
 }

@@ -1,6 +1,6 @@
-export function Logo(props: React.HTMLAttributes<HTMLAnchorElement>) {
+export function Logo({ href = "/dashboard", ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
   return (
-    <a href="/dashboard" className="inline-flex items-center gap-2" {...props}>
+    <a href={href} className="inline-flex items-center gap-2" {...props}>
       <svg
         width="28"
         height="28"
