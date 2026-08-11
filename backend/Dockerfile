@@ -28,8 +28,7 @@ RUN npm ci --omit=dev
 COPY --from=builder /app/dist ./dist
 
 # Expose the application port (actual port comes from $PORT at runtime,
-# forced to 8080 via docker-compose.yaml to match the published port)
-EXPOSE 8080
+EXPOSE 3000
 
 # Command to run the application
 CMD ["node", "dist/main"]

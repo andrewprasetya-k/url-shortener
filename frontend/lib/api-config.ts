@@ -1,13 +1,13 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
 const SHORT_URL_BASE =
-  process.env.NEXT_PUBLIC_SHORT_URL_BASE || "http://localhost:3001";
+  process.env.NEXT_PUBLIC_SHORT_URL_BASE || "http://localhost:3000";
 
 export function getApiUrl(path: string = "") {
   return `${API_BASE_URL}/${path}`;
 }
 
 export function getShortUrl(path: string = "") {
-  return `${API_BASE_URL}/${path}`;
+  return `${SHORT_URL_BASE}/${path}`;
 }
 
 async function refreshAccessToken(): Promise<boolean> {

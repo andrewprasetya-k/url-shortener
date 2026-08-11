@@ -7,7 +7,7 @@ import { VerifyOtpDto } from '../Dto/VerifyOtpDto'; // Import new DTO
 import { JwtAuthGuard } from '../Auth/AuthGuard';
 import { CurrentUser } from '../Decorator/UserDecorator';
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

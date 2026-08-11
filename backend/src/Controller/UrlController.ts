@@ -14,7 +14,7 @@ export class UrlController {
     @InjectConnection() private readonly connection: Connection,
   ) {}
 
-  @Get('test-db')
+  @Get('api/test-db')
   async testDb() {
     try {
       const db = this.connection.db;
@@ -30,7 +30,7 @@ export class UrlController {
     }
   }
 
-  @Post()
+  @Post('api')
   @UseGuards(JwtAuthGuard)
   async createShortUrl(
     @Body() createUrlDto: CreateUrlDto,
@@ -39,12 +39,12 @@ export class UrlController {
     return this.urlService.create(createUrlDto, user.userId);
   }
 
-  @Post('create-url')
+  @Post('api/create-url')
   async createShortUrlPublic(@Body() createUrlDto: CreateUrlDto) {
     return this.urlService.createPublic(createUrlDto);
   }
 
-  @Get('my-urls')
+  @Get('api/my-urls')
   @UseGuards(JwtAuthGuard)
   async getMyUrls(
     @CurrentUser() user: { userId: string; username: string },
@@ -69,7 +69,7 @@ export class UrlController {
     return res.redirect(await this.urlService.findByShortened(url.toString()));
   }
 
-  @Delete('/:url')
+  @Delete('api/:url')
   @UseGuards(JwtAuthGuard)
   async deleteUrl(
     @Param('url') url: string,

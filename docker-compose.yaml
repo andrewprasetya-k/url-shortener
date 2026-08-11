@@ -5,14 +5,15 @@ services:
     env_file:
       - ./backend/.env
     environment:
-      - PORT=8080
+      - PORT=3000
     restart: unless-stopped
 
   frontend:
     build:
       context: ./frontend
       args:
-        NEXT_PUBLIC_API_URL: /api
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-/api}
+        NEXT_PUBLIC_SHORT_URL_BASE: ${NEXT_PUBLIC_SHORT_URL_BASE:-https://zippr.dev}
     depends_on:
       - backend
     restart: unless-stopped
