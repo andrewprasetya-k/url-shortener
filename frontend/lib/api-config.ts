@@ -24,6 +24,7 @@ async function refreshAccessToken(): Promise<boolean> {
     if (res.ok) {
       const data = await res.json();
       localStorage.setItem("access_token", data.access_token);
+      document.cookie = `access_token=${data.access_token}; path=/; max-age=900`;
       if (data.refresh_token) {
         localStorage.setItem("refresh_token", data.refresh_token);
       }
@@ -61,6 +62,7 @@ export async function fetchWithAuth(
       // This is a simple approach. A more robust solution might use a shared state or callback.
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
+      document.cookie = "access_token=; path=/; max-age=0";
       if (typeof window !== "undefined") {
         window.location.href = "/login";
       }
