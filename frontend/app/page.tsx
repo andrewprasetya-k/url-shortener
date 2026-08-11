@@ -69,52 +69,81 @@ export default function Home() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-white px-4 py-12">
-      <div className="w-full max-w-sm">
-        {/* Logo */}
-        <div className="flex justify-center mb-2">
-          <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
-            <svg viewBox="0 0 120 120" className="w-6 h-6">
+    <div className="relative min-h-screen bg-white overflow-hidden">
+      {/* Background accent */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-150 bg-blue-50 rounded-full blur-3xl opacity-60" />
+        <svg
+          className="absolute inset-0 w-full h-full opacity-[0.4]"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <pattern
+              id="grid"
+              width="40"
+              height="40"
+              patternUnits="userSpaceOnUse"
+            >
               <path
-                d="M28 34 L92 34 L48 86 L92 86"
+                d="M 40 0 L 0 0 0 40"
                 fill="none"
-                stroke="#ffffff"
-                strokeWidth="10"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                stroke="#e5e7eb"
+                strokeWidth="1"
               />
-            </svg>
-          </div>
-        </div>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+      </div>
 
-        {/* Header Section */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-semibold text-gray-900 mb-1">
-            Shorten your links
-          </h1>
-          <p className="text-gray-500 text-sm">
-            No account needed — paste a link and go.
-          </p>
-        </div>
-
-        {/* Form Section */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm text-gray-700 mb-1.5">
-              Original URL <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="url"
-              placeholder="https://example.com/your-long-url"
-              value={originalUrl}
-              onChange={(e) => setOriginalUrl(e.target.value)}
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 transition-colors"
-              required
-              disabled={isSubmitting}
-            />
+      <div className="flex items-center justify-center min-h-screen px-4 py-16">
+        <div className="w-full max-w-sm">
+          {/* Logo */}
+          <div className="flex justify-center mb-4">
+            <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
+              <svg viewBox="0 0 120 120" className="w-7 h-7">
+                <path
+                  d="M28 34 L92 34 L48 86 L92 86"
+                  fill="none"
+                  stroke="#ffffff"
+                  strokeWidth="10"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
           </div>
 
-          <div className=" gap-3">
+          {/* Header Section */}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-semibold text-gray-900 mb-2 tracking-tight">
+              Shorten your links
+            </h1>
+            <p className="text-gray-500 text-sm">
+              Free, fast, and no account needed to get started.
+            </p>
+          </div>
+
+          {/* Form Section */}
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4 bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-gray-100 shadow-sm"
+          >
+            <div>
+              <label className="block text-sm text-gray-700 mb-1.5">
+                Original URL <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="url"
+                placeholder="https://example.com/your-long-url"
+                value={originalUrl}
+                onChange={(e) => setOriginalUrl(e.target.value)}
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 transition-colors"
+                required
+                disabled={isSubmitting}
+              />
+            </div>
+
             <div>
               <label className="block text-sm text-gray-700 mb-1.5">
                 Custom Link (Optional)
@@ -128,97 +157,102 @@ export default function Home() {
                 disabled={isSubmitting}
               />
             </div>
-          </div>
 
-          <Button
-            type="submit"
-            disabled={!originalUrl}
-            isLoading={isSubmitting}
-            className="w-full bg-blue-600 hover:bg-blue-700"
-          >
-            <Link2 className="w-4 h-4" />
-            Shorten URL
-          </Button>
-        </form>
+            <Button
+              type="submit"
+              disabled={!originalUrl}
+              isLoading={isSubmitting}
+              className="w-full bg-blue-600 hover:bg-blue-700"
+            >
+              <Link2 className="w-4 h-4" />
+              Shorten URL
+            </Button>
+          </form>
 
-        {/* Result */}
-        {result && (
-          <div className="mt-5 p-4 bg-blue-50 border border-blue-100 rounded-lg">
-            <p className="text-xs text-blue-700 mb-1.5 font-medium">
-              Your short link is ready
-            </p>
-            <div className="flex items-center gap-2">
-              <a
-                href={result}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 min-w-0 truncate text-blue-700 hover:underline text-sm font-medium"
-              >
-                {result}
-              </a>
+          {/* Result */}
+          {result && (
+            <div className="mt-5 p-4 bg-blue-50 border border-blue-100 rounded-lg">
+              <p className="text-xs text-blue-700 mb-1.5 font-medium">
+                Your short link is ready
+              </p>
+              <div className="flex items-center gap-2">
+                <a
+                  href={result}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 min-w-0 truncate text-blue-700 hover:underline text-sm font-medium"
+                >
+                  {result}
+                </a>
+                <Button
+                  type="button"
+                  variant={copied ? "success" : "outline"}
+                  size="icon"
+                  onClick={copyToClipboard}
+                  title="Copy to clipboard"
+                  className="shrink-0 cursor-pointer hover:bg-gray-100"
+                >
+                  {copied ? (
+                    <Check className="w-4 h-4" />
+                  ) : (
+                    <Copy className="w-4 h-4" />
+                  )}
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Footer / sign-up CTA */}
+          {result && !isLoggedIn ? (
+            <div className="mt-3 p-4 border border-gray-200 rounded-lg flex items-center justify-between gap-3">
+              <p className="text-sm text-gray-600">
+                Want to track clicks and manage this link later?
+              </p>
               <Button
                 type="button"
-                variant={copied ? "success" : "outline"}
-                size="icon"
-                onClick={copyToClipboard}
-                title="Copy to clipboard"
-                className="shrink-0 cursor-pointer hover:bg-gray-100"
+                variant="outline"
+                size="sm"
+                onClick={() => (window.location.href = "/register")}
+                className="shrink-0 cursor-pointer hover:bg-gray-100 "
               >
-                {copied ? (
-                  <Check className="w-4 h-4" />
-                ) : (
-                  <Copy className="w-4 h-4" />
-                )}
+                Sign up free
               </Button>
             </div>
-          </div>
-        )}
-
-        {/* Footer / sign-up CTA */}
-        {result && !isLoggedIn ? (
-          <div className="mt-3 p-4 border border-gray-200 rounded-lg flex items-center justify-between gap-3">
-            <p className="text-sm text-gray-600">
-              Want to track clicks and manage this link later?
+          ) : (
+            <p className="text-center text-sm text-gray-600 mt-8">
+              {isLoggedIn ? (
+                <a
+                  href="/dashboard"
+                  className="text-blue-600 font-medium hover:underline"
+                >
+                  Go to Dashboard
+                </a>
+              ) : (
+                <>
+                  <a
+                    href="/login"
+                    className="text-blue-600 font-medium hover:underline"
+                  >
+                    Log in
+                  </a>
+                  <span className="mx-1">or</span>
+                  <a
+                    href="/register"
+                    className="text-blue-600 font-medium hover:underline"
+                  >
+                    Sign up
+                  </a>
+                  <span> to manage all your links.</span>
+                </>
+              )}
             </p>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => (window.location.href = "/register")}
-              className="shrink-0 cursor-pointer hover:bg-gray-100 "
-            >
-              Sign up free
-            </Button>
-          </div>
-        ) : (
-          <p className="text-center text-sm text-gray-600 mt-8">
-            {isLoggedIn ? (
-              <a
-                href="/dashboard"
-                className="text-blue-600 font-medium hover:underline"
-              >
-                Go to Dashboard
-              </a>
-            ) : (
-              <>
-                <a
-                  href="/login"
-                  className="text-blue-600 font-medium hover:underline"
-                >
-                  Log in
-                </a>{" "}
-                or{" "}
-                <a
-                  href="/register"
-                  className="text-blue-600 font-medium hover:underline"
-                >
-                  Sign up
-                </a>{" "}
-                to manage all your links.
-              </>
-            )}
+          )}
+
+          {/* Simple footer */}
+          <p className="text-center text-xs text-gray-400 mt-12">
+            © {new Date().getFullYear()} Zippr. No ads, no tracking.
           </p>
-        )}
+        </div>
       </div>
     </div>
   );
