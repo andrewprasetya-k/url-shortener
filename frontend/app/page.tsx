@@ -100,7 +100,7 @@ export default function Home() {
         <div className="w-full max-w-sm">
           {/* Logo */}
           <div className="flex justify-center mb-4">
-            <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
+            <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center">
               <svg viewBox="0 0 120 120" className="w-7 h-7">
                 <path
                   d="M28 34 L92 34 L48 86 L92 86"
@@ -127,7 +127,7 @@ export default function Home() {
           {/* Form Section */}
           <form
             onSubmit={handleSubmit}
-            className="space-y-4 bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-gray-100 shadow-sm"
+            className="space-y-4 bg-white/80 backdrop-blur-sm p-6 rounded-2xl "
           >
             <div>
               <label className="block text-sm text-gray-700 mb-1.5">
