@@ -15,9 +15,7 @@ services:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-/api}
         NEXT_PUBLIC_SHORT_URL_BASE: ${NEXT_PUBLIC_SHORT_URL_BASE:-https://zippr.dev}
     ports:
-      - "443:443"
-    volumes:
-      - ./certs:/etc/nginx/certs:ro
+      - "80:80"
     depends_on:
       - backend
     restart: unless-stopped
