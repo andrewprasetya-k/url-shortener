@@ -89,23 +89,23 @@ export class UrlService {
   async findByUserId(userId: string, page: number, limit: number, search?: string): Promise<{ data: Url[]; total: number }> {
     const showData = (page - 1) * limit;
 
-    // Membuat filter query dinamis
+    // Build the dynamic query filter
     const filter: any = { userId };
     if (search) {
       filter.$or = [
-        { originalUrl: { $regex: search, $options: 'i' } }, // 'i' untuk case-insensitive
+        { originalUrl: { $regex: search, $options: 'i' } }, // 'i' for case-insensitive
         { shortenedUrl: { $regex: search, $options: 'i' } },
       ];
     }
 
     const [data, total] = await Promise.all([
       this.urlModel
-        .find(filter) // <-- Menggunakan filter dinamis
+        .find(filter) // <-- Uses the dynamic filter
         .skip(showData)
         .limit(limit)
         .sort({ createdAt: -1 })
         .exec(),
-      this.urlModel.countDocuments(filter).exec(), // <-- Menghitung dokumen yang cocok dengan filter
+      this.urlModel.countDocuments(filter).exec(), // <-- Counts documents matching the filter
     ]);
     return { data, total };
   }

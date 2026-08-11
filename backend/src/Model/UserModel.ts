@@ -29,7 +29,7 @@ export class User {
 
 export const UserSchema = SchemaFactory.createForClass(User);
 
-// Pre-save hook untuk hash password sebelum disimpan
+// Pre-save hook to hash the password before it's stored
 UserSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     return next();
@@ -40,7 +40,7 @@ UserSchema.pre('save', async function (next) {
   next();
 });
 
-// Method untuk validasi password
+// Method for validating the password
 if (!UserSchema.methods.validatePassword) {
   UserSchema.methods.validatePassword = async function (password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);

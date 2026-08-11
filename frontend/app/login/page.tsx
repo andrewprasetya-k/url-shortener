@@ -35,12 +35,12 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (res.ok) {
-        // Simpan token ke localStorage dan cookies
+        // Store the token in localStorage and cookies
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("refresh_token", data.refresh_token);
         document.cookie = `access_token=${data.access_token}; path=/; max-age=900`;
 
-        // Redirect menggunakan router.push
+        // Redirect using router.push
         setTimeout(() => {
           router.push("/dashboard");
         }, 500);
@@ -54,7 +54,7 @@ export default function LoginPage() {
     }
   };
 
-  // Show loading screen saat login process
+  // Show loading screen during the login process
   if (loading) {
     return <LoadingScreen />;
   }

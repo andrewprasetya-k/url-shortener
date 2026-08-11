@@ -32,7 +32,7 @@ export default function Sidebar() {
   };
   return (
     <>
-      {/* Tombol toggle (muncul di layar kecil) */}
+      {/* Toggle button (shown on small screens) */}
       <button
         onClick={() => setOpen(!open)}
         className="sm:hidden fixed top-4 left-4 z-100 bg-white text-gray-700 p-2 rounded-lg"
@@ -74,10 +74,10 @@ export default function Sidebar() {
 
       <ConfirmModal
         isOpen={showLogoutModal}
-        title="Konfirmasi Logout"
-        message="Apakah Anda yakin ingin keluar?"
-        confirmText="Ya, Logout"
-        cancelText="Batal"
+        title="Confirm Logout"
+        message="Are you sure you want to log out?"
+        confirmText="Yes, Logout"
+        cancelText="Cancel"
         onConfirm={logout}
         onCancel={() => setShowLogoutModal(false)}
       />

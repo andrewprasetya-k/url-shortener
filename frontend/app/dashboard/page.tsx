@@ -48,7 +48,7 @@ export default function DashboardPage() {
   const [linkToDelete, setLinkToDelete] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [itemsPerPage] = useState(5); // 5 items per page
-  const [totalItems, setTotalItems] = useState(0); // Total dari backend
+  const [totalItems, setTotalItems] = useState(0); // Total from backend
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -72,7 +72,7 @@ export default function DashboardPage() {
       }
       const data = await res.json();
       setLinks(data.data);
-      setTotalItems(data.total); // Set total dari backend
+      setTotalItems(data.total); // Set total from backend
     } catch (err: any) {
       toast.error(err.message || "An error occurred while fetching links");
     } finally {
@@ -475,10 +475,10 @@ export default function DashboardPage() {
       </div>
       <ConfirmModal
         isOpen={deleteModal}
-        title="Konfirmasi Hapus"
-        message="Apakah Anda yakin ingin menghapus link ini?"
-        confirmText="Ya, Hapus"
-        cancelText="Batal"
+        title="Confirm Delete"
+        message="Are you sure you want to delete this link?"
+        confirmText="Yes, Delete"
+        cancelText="Cancel"
         onConfirm={() => {
           if (linkToDelete) {
             handleDelete(linkToDelete);

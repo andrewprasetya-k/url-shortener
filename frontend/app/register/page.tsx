@@ -38,7 +38,7 @@ export default function RegisterPage() {
       const data = await res.json();
 
       if (res.ok) {
-        setMessage(data.message || "Kode OTP telah dikirim ke email anda!");
+        setMessage(data.message || "OTP code has been sent to your email!");
         setStep("verify");
       } else {
         setMessage(`${data.message || "Register account failed"}`);
@@ -65,10 +65,10 @@ export default function RegisterPage() {
       const data = await res.json();
 
       if (res.ok) {
-        setMessage(data.message || "Verifikasi OTP berhasil! Silakan masuk.");
+        setMessage(data.message || "OTP verified successfully! Please log in.");
         router.push("/login");
       } else {
-        setMessage(`${data.message || "Verifikasi OTP gagal."}`);
+        setMessage(`${data.message || "OTP verification failed."}`);
       }
     } catch (error: any) {
       setMessage(error.message || "An error occurred");
@@ -77,7 +77,7 @@ export default function RegisterPage() {
     }
   };
 
-  // Show loading screen saat register process
+  // Show loading screen during the register process
   if (loading) {
     return (
       <LoadingScreen
@@ -94,10 +94,10 @@ export default function RegisterPage() {
           <>
             <div className="mb-8">
               <h1 className="text-2xl font-semibold text-gray-900 mb-1">
-                Buat akun
+                Create an account
               </h1>
               <p className="text-gray-500 text-sm">
-                Selamat datang! Silakan isi detail Anda.
+                Welcome! Please fill in your details.
               </p>
             </div>
             <form onSubmit={handleRegister} className="space-y-5">
@@ -144,7 +144,7 @@ export default function RegisterPage() {
               {message && (
                 <div
                   className={`text-sm ${
-                    message.includes("berhasil") || message.includes("telah dikirim")
+                    message.includes("successfully") || message.includes("sent")
                       ? "text-green-600"
                       : "text-red-600"
                   }`}
@@ -157,16 +157,16 @@ export default function RegisterPage() {
                 type="submit"
                 className="w-full bg-blue-600 text-white py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
               >
-                Buat akun
+                Create account
               </button>
 
               <p className="text-center text-sm text-gray-600">
-                Sudah punya akun?{" "}
+                Already have an account?{" "}
                 <a
                   href="/login"
                   className="text-blue-600 font-medium hover:underline"
                 >
-                  Masuk di sini
+                  Log in here
                 </a>
               </p>
             </form>
@@ -176,17 +176,17 @@ export default function RegisterPage() {
           <>
             <div className="mb-8">
               <h1 className="text-2xl font-semibold text-gray-900 mb-1">
-                Verifikasi email
+                Verify your email
               </h1>
               <p className="text-gray-500 text-sm">
-                Masukkan kode 6 digit yang dikirim ke{" "}
+                Enter the 6-digit code sent to{" "}
                 <span className="text-gray-900 font-medium">{email}</span>
               </p>
             </div>
             <form onSubmit={handleVerifyOtp} className="space-y-5">
               <div>
                 <label className="block text-sm text-gray-700 mb-1.5">
-                  Kode OTP
+                  OTP Code
                 </label>
                 <input
                   type="text"
@@ -202,7 +202,7 @@ export default function RegisterPage() {
               {message && (
                 <div
                   className={`text-sm ${
-                    message.includes("berhasil") ? "text-green-600" : "text-red-600"
+                    message.includes("successfully") ? "text-green-600" : "text-red-600"
                   }`}
                 >
                   {message}
@@ -213,17 +213,17 @@ export default function RegisterPage() {
                 type="submit"
                 className="w-full bg-blue-600 text-white py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
               >
-                Verifikasi & buat akun
+                Verify & create account
               </button>
 
               <p className="text-center text-sm text-gray-600">
-                Tidak menerima kode?{" "}
+                Didn&apos;t receive the code?{" "}
                 <button
                   type="button"
                   onClick={() => setStep("register")}
                   className="text-blue-600 font-medium hover:underline cursor-pointer"
                 >
-                  Kirim ulang
+                  Resend
                 </button>
               </p>
             </form>

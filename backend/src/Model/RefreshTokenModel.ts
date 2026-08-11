@@ -17,5 +17,5 @@ export class RefreshToken {
 
 export const RefreshTokenSchema = SchemaFactory.createForClass(RefreshToken);
 
-// Index untuk auto-delete expired tokens
+// Index for auto-deleting expired tokens
 RefreshTokenSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });

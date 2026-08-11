@@ -15,10 +15,10 @@ interface ConfirmModalProps {
 
 export default function ConfirmModal({
   isOpen,
-  title = 'Konfirmasi',
-  message = 'Apakah kamu yakin ingin melanjutkan?',
-  confirmText = 'Ya',
-  cancelText = 'Batal',
+  title = 'Confirm',
+  message = 'Are you sure you want to continue?',
+  confirmText = 'Yes',
+  cancelText = 'Cancel',
   onConfirm,
   onCancel,
 }: ConfirmModalProps) {

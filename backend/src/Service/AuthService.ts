@@ -41,7 +41,7 @@ export class AuthService {
 
     const existingUser = await this.userModel.findOne({ $or: [{ username }, { email }] }).exec();
     if (existingUser) {
-      throw new ConflictException('Username atau email sudah terdaftar');
+      throw new ConflictException('Username or email is already registered');
     }
 
     const existingOtp = await this.otpModel.findOne({ email }).exec();
@@ -73,32 +73,32 @@ export class AuthService {
       await this.transporter.sendMail({
         from: this.configService.get<string>('EMAIL_FROM'),
         to: email,
-        subject: 'Verifikasi Akun Anda',
-        html: `<p>Kode verifikasi Anda adalah: <strong>${otp}</strong></p><p>Kode ini akan kedaluwarsa dalam 5 menit.</p>`,
+        subject: 'Verify Your Account',
+        html: `<p>Your verification code is: <strong>${otp}</strong></p><p>This code will expire in 5 minutes.</p>`,
       });
-      return { message: 'Kode OTP telah dikirim ke email Anda.' };
+      return { message: 'OTP code has been sent to your email.' };
     } catch (error) {
       console.error('Error sending email:', error);
-      throw new InternalServerErrorException('Gagal mengirim kode verifikasi. Silakan coba lagi.');
+      throw new InternalServerErrorException('Failed to send verification code. Please try again.');
     }
   }
 
   async login(loginDto: LoginUserDto): Promise<{ access_token: string; refresh_token: string }> {
     const user = await this.userModel.findOne({ username: loginDto.username }).exec();
     if (!user || !(await user.validatePassword(loginDto.password))) {
-      throw new UnauthorizedException('Kredensial yang diberikan tidak valid');
+      throw new UnauthorizedException('Invalid credentials provided');
     }
     const payload = { username: user.username, sub: user._id };
-    
-    // Generate access token (15 menit)
+
+    // Generate access token (30 minutes)
     const access_token = this.jwtService.sign(payload, { expiresIn: '30m' });
-    
-    // Generate refresh token (7 hari)
+
+    // Generate refresh token (7 days)
     const refresh_token = crypto.randomBytes(64).toString('hex');
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7);
-    
-    // Simpan refresh token ke database
+
+    // Save refresh token to database
     await this.refreshTokenModel.create({
       token: refresh_token,
       userId: (user._id as Types.ObjectId).toString(),
@@ -115,12 +115,12 @@ export class AuthService {
     const tokenDoc = await this.refreshTokenModel.findOne({ token: refreshToken }).exec();
     
     if (!tokenDoc || tokenDoc.expiresAt < new Date()) {
-      throw new UnauthorizedException('Refresh token tidak valid atau sudah expired');
+      throw new UnauthorizedException('Refresh token is invalid or has expired');
     }
-    
+
     const user = await this.userModel.findById(tokenDoc.userId).exec();
     if (!user) {
-      throw new UnauthorizedException('User tidak ditemukan');
+      throw new UnauthorizedException('User not found');
     }
     
     const payload = { username: user.username, sub: user._id };
@@ -133,29 +133,29 @@ export class AuthService {
     const result = await this.refreshTokenModel.deleteOne({ token: refreshToken }).exec();
     
     if (result.deletedCount === 0) {
-      throw new UnauthorizedException('Refresh token tidak ditemukan');
+      throw new UnauthorizedException('Refresh token not found');
     }
-    
-    return { message: 'Logout berhasil' };
+
+    return { message: 'Logout successful' };
   }
 
   async verifyOtpAndCreateUser(email: string, otp: string): Promise<{ access_token: string; refresh_token: string }> {
     const otpRecord = await this.otpModel.findOne({ email }).exec();
 
     if (!otpRecord) {
-      throw new UnauthorizedException('Kode verifikasi tidak ditemukan atau sudah kedaluwarsa.');
+      throw new UnauthorizedException('Verification code not found or has expired.');
     }
 
     // Check if OTP has expired (redundant with TTL index but good for immediate check)
     if (otpRecord.expiresAt < new Date()) {
       await this.otpModel.deleteOne({ email }).exec(); // Clean up expired OTP
-      throw new UnauthorizedException('Kode verifikasi sudah kadaluwarsa.');
+      throw new UnauthorizedException('Verification code has expired.');
     }
 
     const hashedInputOtp = crypto.createHash('sha256').update(otp).digest('hex');
 
     if (hashedInputOtp !== otpRecord.otp) {
-      throw new UnauthorizedException('Kode verifikasi tidak valid.');
+      throw new UnauthorizedException('Invalid verification code.');
     }
 
     // OTP is valid, create the user
