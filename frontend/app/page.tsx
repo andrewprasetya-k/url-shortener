@@ -70,6 +70,25 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-white overflow-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            name: "Zippr",
+            url: "https://zippr.dev",
+            description:
+              "Free URL shortener. Turn long links into short, shareable ones in seconds — no account needed.",
+            applicationCategory: "UtilitiesApplication",
+            offers: {
+              "@type": "Offer",
+              price: "0",
+              priceCurrency: "USD",
+            },
+          }),
+        }}
+      />
       {/* Background accent */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-150 bg-blue-50 rounded-full blur-3xl opacity-60" />
