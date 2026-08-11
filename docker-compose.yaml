@@ -1,22 +1,28 @@
-services:
-  backend:
-    build:
-      context: ./backend
-    ports:
-      - "8084:8080"
-    env_file:
-      - ./backend/.env
-    environment:
-      - PORT=8080
-    restart: unless-stopped
+server {
+listen 80;
+server_name zippr.dev;
 
-  frontend:
-    build:
-      context: ./frontend
-      args:
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8084}
-    ports:
-      - "8085:3001"
-    depends_on:
-      - backend
-    restart: unless-stopped
+location ~ ^/(create-url|my-urls|test-db|auth) {
+proxy_pass http://backend:8080;
+proxy_http_version 1.1;
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection 'upgrade';
+proxy_set_header Host $host;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header X-Forwarded-Proto $scheme;
+proxy_cache_bypass $http_upgrade;
+}
+
+location / {
+proxy_pass http://frontend:3001;
+proxy_http_version 1.1;
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection 'upgrade';
+proxy_set_header Host $host;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header X-Forwarded-Proto $scheme;
+proxy_cache_bypass $http_upgrade;
+}
+}
