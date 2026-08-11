@@ -40,5 +40,7 @@ coverage/
 
 # Misc
 *.pem
+*.key
+certs/
 .vercel
 PORTFOLIO_PROJECT_IDEAS.md
